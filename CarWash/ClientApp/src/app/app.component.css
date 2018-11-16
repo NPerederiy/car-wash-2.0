@@ -1,6 +1,29 @@
-@media (max-width: 767px) {
-  /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
-  .body-content {
-    padding-top: 50px;
-  }
+#body-content {
+  position: absolute;
+  background-color: transparent; 
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  height: 100%; 
+}
+
+#left-column {
+  position: absolute;
+  background-color: rgb(54, 7, 54);
+  color: aliceblue;
+  width: 280px;
+  height: 100%;
+}
+
+@media (max-width: 700px){
+  #left-column {
+    position: relative;
+    width: 100%;
+    height: auto;
+  } 
+
+  #body-content {
+    position: relative;
+    width: 100%;
+    margin: 0; 
+  } 
 }
