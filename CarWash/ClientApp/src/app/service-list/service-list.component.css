@@ -1,0 +1,31 @@
+.splitter{
+    background-color: aliceblue;
+    margin-top: 3px;
+}
+
+.header{
+    text-align: center;
+}
+
+p{
+    font-size: 14pt;
+}
+
+#total{
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 700px){
+    #total{
+        position: absolute;
+        bottom: 30px;
+        width: 80%;
+    }
+}
+
+#service-list{
+    padding: 30px 9.9% 30px 9.9%; 
+    height: 100%; 
+    min-width: 280px;
+}

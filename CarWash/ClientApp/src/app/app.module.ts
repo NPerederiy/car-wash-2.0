@@ -6,27 +6,33 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ServiceListComponent } from './service-list/service-list.component';
+import { ServiceListItemComponent } from './service-list-item/service-list-item.component';
+import { CalendarCarouselComponent } from './calendar-carousel/calendar-carousel.component';
+import { CalendarCarouselItemComponent } from './calendar-carousel-item/calendar-carousel-item.component';
+import { BoxListComponent } from './box-list/box-list.component';
+import { BoxListItemComponent } from './box-list-item/box-list-item.component';
+import { TimeBarComponent } from './time-bar/time-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
     FetchDataComponent,
-    ServiceListComponent
+    ServiceListComponent,
+    ServiceListItemComponent,
+    CalendarCarouselComponent,
+    CalendarCarouselItemComponent,
+    BoxListComponent,
+    BoxListItemComponent,
+    TimeBarComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
