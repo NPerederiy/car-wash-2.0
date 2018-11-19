@@ -1,0 +1,91 @@
+.arrow {
+    background: transparent;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .arrow.left, .arrow.right {
+    width: 20px;
+    height: 40px;
+  }
+  
+  .arrow::before, .arrow::after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .arrow.left::before, .arrow.left::after {
+    left: 0;
+    border-left: solid 2px black;
+  }
+  
+  .arrow.left::before {
+    top: -50%;
+    transform: rotate(45deg);
+    transform-origin: left bottom;
+  }
+  
+  .arrow.left::after {
+    top: 50%;
+    transform: rotate(-45deg);
+    transform-origin: left top;
+  }
+  
+  .arrow.right::before, .arrow.right::after {
+    border-right: solid 2px black;
+    right: 0;
+  }
+  
+  .arrow.right::before {
+    top: -50%;
+    transform: rotate(-45deg);
+    transform-origin: right bottom;
+  }
+  
+  .arrow.right::after {
+    top: 50%;
+    transform: rotate(45deg);
+    transform-origin: right top;
+  }
+  
+  .arrow.top, .arrow.bottom {
+    width: 40px;
+    height: 20px;
+  }
+  
+  .arrow.top::before, .arrow.top::after {
+    top: 0;
+    border-top: solid 2px black;
+  }
+  
+  .arrow.top::before {
+    left: -50%;
+    transform: rotate(-45deg);
+    transform-origin: right top;
+  }
+  
+  .arrow.top::after {
+    left: 50%;
+    transform: rotate(45deg);
+    transform-origin: left top;
+  }
+  
+  .arrow.bottom::before, .arrow.bottom::after {
+    bottom: 0;
+    border-bottom: solid 2px black;
+  }
+  
+  .arrow.bottom::before {
+    left: -50%;
+    transform: rotate(45deg);
+    transform-origin: right bottom;
+  }
+  
+  .arrow.bottom::after {
+    left: 50%;
+    transform: rotate(-45deg);
+    transform-origin: left bottom;
+  }

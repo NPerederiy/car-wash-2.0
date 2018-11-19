@@ -1,6 +1,7 @@
 #body-content {
   position: absolute;
-  background-color: transparent; 
+  background-image: url('../img/carwash-background.png');
+  background-size:cover; 
   margin-left: 280px;
   width: calc(100% - 280px);
   height: 100%; 
@@ -8,7 +9,7 @@
 
 #left-column {
   position: absolute;
-  background-color: rgb(54, 7, 54);
+  background-color: rgb(4, 68, 72);
   color: aliceblue;
   width: 280px;
   height: 100%;
