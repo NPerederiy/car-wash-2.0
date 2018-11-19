@@ -1,3 +1,13 @@
-<p>
-  calendar-carousel works!
-</p>
+<ngb-carousel  #carousel>
+  <ng-template *ngFor="let i of items" ngbSlide>
+    <div class="calendar-item">
+      <div (click)="prevDay()">
+        <div class="arrow left"></div>
+      </div>
+      <calendar-carousel-item [item]="i"></calendar-carousel-item>
+      <div (click)="nextDay()">
+        <div class="arrow right"></div>
+      </div>
+    </div>
+  </ng-template>
+</ngb-carousel>

@@ -26,5 +26,17 @@ export class ServiceListComponent implements OnInit {
    }
 
   ngOnInit() {
+    document.addEventListener('OnServiceChecked', ()=>{
+      this.totalPrice = 0;
+      this.totalTime = 0;
+      console.log('hey!!');
+      this.items.forEach(item => {
+        if(item.isChecked)
+        {
+          this.totalPrice += item.getPrice;
+          this.totalTime += item.getTime;
+        }
+      });
+    });
   }
 }

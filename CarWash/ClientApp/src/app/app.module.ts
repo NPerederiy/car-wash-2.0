@@ -14,6 +14,7 @@ import { CalendarCarouselItemComponent } from './calendar-carousel-item/calendar
 import { BoxListComponent } from './box-list/box-list.component';
 import { BoxListItemComponent } from './box-list-item/box-list-item.component';
 import { TimeBarComponent } from './time-bar/time-bar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { TimeBarComponent } from './time-bar/time-bar.component';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgbModule,
     RouterModule.forRoot([
       { path: 'fetch-data', component: FetchDataComponent },
     ])

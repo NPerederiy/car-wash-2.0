@@ -1,0 +1,13 @@
+.number{
+    font-size: 24pt;
+}
+
+.label{
+    font-size: 14pt;
+    padding-left: 4px;
+}
+
+.sublabel{
+    font-size: 10pt;
+    padding-left: 4px;
+}

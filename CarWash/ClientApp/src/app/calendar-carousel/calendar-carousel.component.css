@@ -1,0 +1,14 @@
+.calendar-item{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.4);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 9.9% 30px 9.9%;
+    margin: 0;
+}
+
+.navigation{
+    padding: 60px, 0, 60px, 0;
+}
