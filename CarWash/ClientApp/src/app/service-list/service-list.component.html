@@ -1,17 +1,19 @@
 <div id="service-list">
   <div>
-    <h3 class="header">
-      {{ header }}
-    </h3>
+    <h3 class="header" [innerHTML]="header"></h3>
     <hr class="splitter">
   </div>
   <div>
-    <service-list-item *ngFor="let i of items" [service]="i"></service-list-item>
+    <service-list-item *ngFor="let i of items" [service]="i" (onServiceChanged)="calcTotals($event)"></service-list-item>
   </div>
   <div id='total'>
     <hr class="splitter">
-    <p>
-      {{ total }}
-    </p>
+    <div class='block'>
+      <div class="line-item" [innerHTML]="totalPrice"></div>
+      <div class="whitespace"></div>
+      <div class="line-item" [innerHTML]="message"></div>
+      <div class="whitespace"></div>
+      <div class="line-item" [innerHTML]="totalTime"></div>
+    </div>
   </div>
 </div>

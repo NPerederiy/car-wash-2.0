@@ -9,6 +9,7 @@
 
 p{
     font-size: 14pt;
+    margin: 0;
 }
 
 #total{
@@ -28,4 +29,17 @@ p{
     padding: 30px 9.9% 30px 9.9%; 
     height: 100%; 
     min-width: 280px;
+}
+
+.block{
+    display: flex;
+    justify-content: center;
+}
+
+.line-item .whitespace{
+    display: inline;
+}
+
+.whitespace{
+    width: 7px;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbCarouselConfig, NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ICalendarItem, CalendarItem } from '../calendar-carousel-item/calendar-carousel-item.model';
 
 @Component({
@@ -11,6 +11,7 @@ import { ICalendarItem, CalendarItem } from '../calendar-carousel-item/calendar-
   ],
   providers: [NgbCarouselConfig]
 })
+
 export class CalendarCarouselComponent implements OnInit {
   @ViewChild('carousel') carousel: any;
   items : ICalendarItem[];
