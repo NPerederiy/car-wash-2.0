@@ -1,0 +1,56 @@
+.box-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+time-bar, box-list-item{
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 10px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-y: auto;
+}
+
+time-bar{
+    min-width: 90px;
+    /* max-width: 90px; */
+    flex-grow: 0;
+}
+
+box-list-item{
+    min-width: 160px;
+    flex-grow: 1;
+    /* min-width: 160px; */
+}
+
+/* @media (min-width: 700px){
+    time-bar{
+        height: 75vh;
+    }
+} */
+time-bar .line-item{
+    padding: 15px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

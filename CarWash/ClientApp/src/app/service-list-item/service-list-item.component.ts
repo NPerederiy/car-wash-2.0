@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IService, Service } from './service.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IService } from './service.model';
 
 @Component({
   selector: 'service-list-item',
@@ -9,6 +9,7 @@ import { IService, Service } from './service.model';
 
 export class ServiceListItemComponent implements OnInit {
   @Input() service : IService;
+  @Output() onServiceChanged = new EventEmitter<IService>();
   
   constructor() { }
 
@@ -17,7 +18,6 @@ export class ServiceListItemComponent implements OnInit {
 
   checkService(){
     this.service.changeCheckedState();
-    console.log(this.service.isChecked);
+    this.onServiceChanged.emit(this.service);
   }
-
 }

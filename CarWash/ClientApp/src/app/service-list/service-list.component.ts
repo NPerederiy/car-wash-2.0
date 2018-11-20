@@ -8,35 +8,51 @@ import { IService, Service } from '../service-list-item/service.model';
 })
 
 export class ServiceListComponent implements OnInit {
+  // @ViewChild('totalInfo') totalInfo: HTMLDivElement;
+
   header: string;
-  total: string;
-  totalPrice: number = 0;
-  totalTime: number = 0;
+  message: string;
+  totalPrice: string;
+  totalTime: string;
+
+  tPrice: number = 0;
+  tTime: number = 0;
   items: IService[];
 
   constructor(/*items?: IService[]*/) {
     this.header = 'Service list';
-    this.total = `Total:  $${this.totalPrice} - ${this.totalTime} min`;
     this.items = /*items ||*/ [
       new Service('Automatic wash', 10, 5),
       new Service('Automatic wash', 10, 5),
       new Service('Automatic wash', 10, 5),
       new Service('Automatic wash', 10, 5)
     ];
-   }
-
+  }
+  
   ngOnInit() {
-    document.addEventListener('OnServiceChecked', ()=>{
-      this.totalPrice = 0;
-      this.totalTime = 0;
-      console.log('hey!!');
-      this.items.forEach(item => {
-        if(item.isChecked)
-        {
-          this.totalPrice += item.getPrice;
-          this.totalTime += item.getTime;
-        }
-      });
-    });
+    this.refreshTotalInfo();
+  }
+
+  calcTotals(e : IService){
+    if(e.isChecked){
+      this.tPrice += e.getPrice;
+      this.tTime += e.getTime;
+    } else {
+      this.tPrice -= e.getPrice;
+      this.tTime -= e.getTime;
+    }
+    this.refreshTotalInfo();
+  }
+
+  private refreshTotalInfo(){
+    if(this.tTime == 0){
+      this.message = 'Select services above';
+      this.totalPrice = '';
+      this.totalTime = '';
+    } else {
+      this.message = '';
+      this.totalPrice = `Price: $${this.tPrice}`;
+      this.totalTime = `Time: ${this.tTime} min`;
+    }
   }
 }

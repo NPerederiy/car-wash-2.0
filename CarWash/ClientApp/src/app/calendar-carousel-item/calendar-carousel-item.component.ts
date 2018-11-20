@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ICalendarItem, CalendarItem } from '../calendar-carousel-item/calendar-carousel-item.model';
+import { ICalendarItem } from './calendar-carousel-item.model';
 
 @Component({
   selector: 'calendar-carousel-item',

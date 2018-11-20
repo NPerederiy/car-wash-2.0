@@ -1,11 +1,11 @@
 .calendar-item{
     display: flex;
     justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.5);
     align-content: center;
     align-items: center;
     text-align: center;
-    padding: 30px 9.9% 30px 9.9%;
+    padding: 25px 7% 30px 7%;
     margin: 0;
 }
 

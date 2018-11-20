@@ -1,10 +1,10 @@
 <div>
-  <label class="container" (click)='checkService()'>
+  <label class="container" (change)='checkService()'>
     <input type="checkbox">
     <span class="checkmark"></span>
     {{ service.getName }} 
     <br>
-    ${{ service.getPrice }} - {{ service.getTime }} min
+    <div>${{ service.getPrice }} - {{ service.getTime }} min</div>
   </label>
   
 </div>

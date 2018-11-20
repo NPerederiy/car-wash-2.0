@@ -14,7 +14,6 @@ export class Service implements IService{
     private _price: number;
     private _time: number;
     private _isChecked: boolean;
-    private event: any;
 
     get getName(): string { return this._name; }
     get getDescription(): string { return this._descr; }
@@ -28,13 +27,9 @@ export class Service implements IService{
       this._price = price;
       this._time = time;
       this._isChecked = isChecked || false;
-
-      this.event = new Event('OnServiceChecked');
-      this.event.initEvent('OnServiceChecked', true, true);
     }
 
     changeCheckedState(){
         this._isChecked = !this._isChecked;
-        document.dispatchEvent(this.event);
     }
 }
