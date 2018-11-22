@@ -1,4 +1,10 @@
-<div class="box-container">
-  <time-bar></time-bar>
-  <box-list-item *ngFor="let i of items" [item]="i"></box-list-item>
-</div>
+<!-- <div id="box-holder"> -->
+  <div class="headers">
+    <div class="list-header">Time</div>
+    <div class="list-header box" *ngFor="let i of items">{{ i.getHeader }}</div>
+  </div>
+  <div class="box-container">
+    <time-bar></time-bar>
+    <box-list-item *ngFor="let i of items" [item]="i"></box-list-item>
+  </div>
+<!-- </div> -->

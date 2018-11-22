@@ -1,7 +1,8 @@
-<div class="line-item header">
-  Box #1
-</div>
-<hr>
-<div class="line-item">
-  free
+<!-- <div class="line-item header">
+  {{ item.getHeader }}
+</div> -->
+<!-- <hr> -->
+<div class="line-item" *ngFor="let s of timeSlots">
+  {{ s.toString() }}
+  <hr>
 </div>

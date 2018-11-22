@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IBox, Box } from '../box-list-item/box.model';
+import { Box } from './box.model';
+import { IBox } from "@shared/models/interfaces/box.interface";
 
 @Component({
   selector: 'box-list',
@@ -8,14 +9,13 @@ import { IBox, Box } from '../box-list-item/box.model';
 })
 
 export class BoxListComponent implements OnInit {
-  items : IBox[];
-
+  items: IBox[];
+  
   constructor() {
     this.items = [
-      new Box(),
-      new Box(),
-      new Box(),
-      new Box()
+      new Box('Box #1'),
+      new Box('Box #2'),
+      new Box('Box #3'),
     ]
    }
 

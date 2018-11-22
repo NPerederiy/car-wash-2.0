@@ -1,7 +1,8 @@
-<div class="line-item header">
-  Time
-</div>
-<hr>
-<div class="line-item">
-  10:00 am
+<!-- <div class="line-item header">
+  {{ header }}
+</div> -->
+<!-- <hr> -->
+<div class="line-item" *ngFor="let s of timeSlots">
+  {{ s.toString() }}
+  <hr>
 </div>

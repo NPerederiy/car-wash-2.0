@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IService } from './service.model';
+import { IService } from "@shared/models/interfaces/car-wash-service.interface";
 
 @Component({
   selector: 'service-list-item',
