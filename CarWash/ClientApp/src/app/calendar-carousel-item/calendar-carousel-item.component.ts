@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ICalendarItem } from './calendar-carousel-item.model';
+import { ICalendarItem } from "@shared/models/interfaces/calendar-item.interface";
 
 @Component({
   selector: 'calendar-carousel-item',

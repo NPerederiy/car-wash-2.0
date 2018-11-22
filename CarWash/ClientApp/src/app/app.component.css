@@ -1,10 +1,14 @@
 #body-content {
   position: absolute;
-  background-image: url('../img/carwash-background.png');
-  background-size:cover; 
+  background-image: url('/assets/img/carwash-background.png');
+  background-size: cover; 
   margin-left: 280px;
   width: calc(100% - 280px);
   height: 100%; 
+  overflow: hidden;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #left-column {
@@ -26,5 +30,6 @@
     position: relative;
     width: 100%;
     margin: 0; 
+   
   } 
 }

@@ -1,8 +1,4 @@
-export interface ICalendarItem{
-    getDay: number;
-    getMonth: string;
-    getDayOfWeek: string;
-}
+import { ICalendarItem } from "@shared/models/interfaces/calendar-item.interface";
 
 export class CalendarItem implements ICalendarItem{
     private _day: number;

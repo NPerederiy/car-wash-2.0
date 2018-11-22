@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IService, Service } from '../service-list-item/service.model';
+import { Service } from './car-wash-service.model';
+import { IService } from "@shared/models/interfaces/car-wash-service.interface";
 
 @Component({
   selector: 'service-list',
@@ -8,8 +9,6 @@ import { IService, Service } from '../service-list-item/service.model';
 })
 
 export class ServiceListComponent implements OnInit {
-  // @ViewChild('totalInfo') totalInfo: HTMLDivElement;
-
   header: string;
   message: string;
   totalPrice: string;

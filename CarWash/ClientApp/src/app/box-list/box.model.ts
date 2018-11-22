@@ -1,27 +1,18 @@
-export interface IBox{
-    getHeader: string;
-    getFreeTime: TimeInterval[];
-    getTimeCells: boolean[];
-
-    isTimeCellFree(id: number): boolean;
-    chooseTimeSlot();
-}
-
-export class TimeInterval{
-    timeFrom: { hours: number, minutes : number };
-    timeTo: { hours: number, minutes : number };
-}
+import { IBox } from "@shared/models/interfaces/box.interface";
+import { ITimeInterval } from "@shared/models/interfaces/time-interval.interface";
 
 export class Box implements IBox{
     private _header: string;
-    private _freeTime: TimeInterval[];
+    private _freeTime: ITimeInterval[];
     private _timeCells: boolean[];
 
     get getHeader(): string { return this._header };
-    get getFreeTime(): TimeInterval[] { return this._freeTime };
+    get getFreeTime(): ITimeInterval[] { return this._freeTime };
     get getTimeCells(): boolean[] { return this._timeCells };
 
-    constructor() {}
+    constructor(header: string) {
+        this._header = header;
+    }
 
     isTimeCellFree(id: number): boolean {
         if(id < 0 || id >= this._timeCells.length)

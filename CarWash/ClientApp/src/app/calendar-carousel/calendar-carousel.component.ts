@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ICalendarItem, CalendarItem } from '../calendar-carousel-item/calendar-carousel-item.model';
+import { CalendarItem } from './calendar-item.model';
+import { ICalendarItem } from "@shared/models/interfaces/calendar-item.interface";
+import { DayOfWeek } from '@shared/models/day-of-week.enum';
+import { Month } from '@shared/models/month.enum';
 
 @Component({
   selector: 'calendar-carousel',
@@ -15,7 +18,8 @@ import { ICalendarItem, CalendarItem } from '../calendar-carousel-item/calendar-
 export class CalendarCarouselComponent implements OnInit {
   @ViewChild('carousel') carousel: any;
   items : ICalendarItem[];
-  
+  date: Date = new Date();
+
   constructor(config: NgbCarouselConfig) {
     config.interval = 0;
     config.wrap = false;
@@ -23,15 +27,12 @@ export class CalendarCarouselComponent implements OnInit {
     config.pauseOnHover = false;
     config.showNavigationIndicators = false;
     config.showNavigationArrows = false;
-    this.items = [
-      new CalendarItem(19, 'NOV', 'Monday'),
-      new CalendarItem(20, 'NOV', 'Tuesday'),
-      new CalendarItem(21, 'NOV', 'Wednesday'),
-      new CalendarItem(22, 'NOV', 'Thursday'),
-      new CalendarItem(23, 'NOV', 'Friday'),
-      new CalendarItem(24, 'NOV', 'Saturday'),
-      new CalendarItem(25, 'NOV', 'Sunday'),
-    ];
+
+    this.items = [];
+    for (let i = 0; i < 7; i++) {
+      this.items.push(new CalendarItem(this.date.getDate(), Month[this.date.getMonth()], DayOfWeek[this.date.getDay()]));
+      this.gotoNextDay();
+    }
   }
 
   ngOnInit() {
@@ -45,7 +46,7 @@ export class CalendarCarouselComponent implements OnInit {
      this.carousel.prev();
   }
 
-  sayHello(){
-    console.log('hello!');
+  private gotoNextDay(){
+    this.date.setDate(this.date.getDate() + 1);
   }
 }

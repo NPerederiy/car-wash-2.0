@@ -1,12 +1,4 @@
-export interface IService{
-    getName: string;
-    getDescription: string;
-    getPrice: number;
-    getTime: number;
-    isChecked: boolean;
-
-    changeCheckedState();
-}
+import { IService } from "@shared/models/interfaces/car-wash-service.interface";
 
 export class Service implements IService{
     private _name: string;
