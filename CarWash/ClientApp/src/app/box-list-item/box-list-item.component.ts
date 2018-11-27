@@ -9,7 +9,9 @@ import { ITimeInterval } from '@shared/models/interfaces/time-interval.interface
 @Component({
   selector: 'box-list-item',
   templateUrl: './box-list-item.component.html',
-  styleUrls: ['./box-list-item.component.css']
+  styleUrls: [
+    './box-list-item.component.css'
+  ]
 })
 
 export class BoxListItemComponent implements OnInit {

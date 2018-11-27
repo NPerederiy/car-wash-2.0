@@ -1,8 +1,8 @@
-import { ITimeInterval } from "@shared/models/interfaces/time-interval.interface";
+import { ITimeSlot } from "@shared/models/interfaces/time-slot.interface";
 
 export interface IBox {
     getHeader: string;
-    getFreeTime: ITimeInterval[];
+    getFreeTime: ITimeSlot[];
     getTimeCells: boolean[];
     isTimeCellFree(id: number): boolean;
     chooseTimeSlot();

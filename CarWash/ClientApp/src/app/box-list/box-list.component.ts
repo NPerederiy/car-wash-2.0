@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Box } from './box.model';
+import { Box } from '@shared/models/box.model';
 import { IBox } from "@shared/models/interfaces/box.interface";
 
 @Component({
@@ -16,6 +16,7 @@ export class BoxListComponent implements OnInit {
       new Box('Box #1'),
       new Box('Box #2'),
       new Box('Box #3'),
+      new Box('Box #4'),
     ]
    }
 
