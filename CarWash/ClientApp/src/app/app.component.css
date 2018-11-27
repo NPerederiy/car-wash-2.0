@@ -6,9 +6,10 @@
   width: calc(100% - 280px);
   height: 100%; 
   overflow: hidden;
-  max-height: 100vh;
+  /* max-height: 100vh; */
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 #left-column {
@@ -32,4 +33,12 @@
     margin: 0; 
    
   } 
+}
+
+calendar-carousel{
+  flex-grow: 0;
+}
+
+box-list{
+  flex-grow: 1;
 }

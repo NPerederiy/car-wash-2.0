@@ -1,86 +1,79 @@
-/* #box-holder{
-    padding-bottom: 20px;
-} */
-/* height: calc(100% - 170px); */
-
-.headers{
+#component{
     display: flex;
-    justify-content: space-between;
-    padding: 10px 10px 1px 10px;
-    margin-right: 9px;
+    justify-content: stretch;
+    flex-direction: row;
+    padding: 10px 0 0 5px;
 }
 
-.box-container{
+#left-col{
+    max-width: 100px;
+    flex-grow: 0;
+}
+
+#right-col{
+    flex-grow: 1;
+    max-width: 90%;
+    /* overflow: auto; */
+}
+
+:host /deep/ .item{
+    background-color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 5px;
+    padding: 2px;
+    min-width: 90px;
+    min-height: 20px;
+}
+
+.box-list-container{
     display: flex;
     justify-content: space-between;
-    padding: 0 10px 10px 10px;
-    height: 70vh;
+    height: 72vh;
     overflow-x: auto;
     overflow-y: auto;
 }
 
-.list-header{
-    padding: 8px 0;
-    margin: 10px 10px 0 10px;
-    min-height: 42px;
-    max-height: 42px;
-    /* background-color: rgb(255, 255, 255); */
-    background-color: rgba(255, 255, 255, 0.7);
+box-list-item{
+    min-width: 150px;
+    flex-grow: 1;
+    /* height: 100vh; */
 }
 
-.list-header, time-bar, box-list-item{
-    
-    text-align: center;
-    vertical-align: middle;
-    /* overflow-y: auto; */
-}
-
-time-bar, box-list-item{
-    margin: 0 10px;
-}
-
-time-bar{
-    position: -webkit-sticky;
-    position: sticky;
-    left: 10px;
-}
-
-.list-header, time-bar{
-    min-width: 90px;
+.time-bar{
+    /* flex-grow: 0; */
     /* max-width: 90px; */
+    /* overflow-y: scroll; */
+    height: 72vh;
+    overflow-y: auto;
+}
+
+.headers{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px;
+    overflow-x: auto;
+}
+
+.header-time, .header-box{
+    padding: 5px;
+    margin: 5px;
+}
+
+.header-time{
+    min-width: 90px;
     flex-grow: 0;
 }
 
-.list-header.box{
-    min-width: 160px;
+.header-box{
+    /* min-width: 150px; */
     flex-grow: 1;
 }
-
-box-list-item{
-    min-width: 160px;
-    flex-grow: 1;
-    height: 100vh;
-}
-
-@media (min-width: 700px){
-    /* time-bar{
-        height: 70vh;
-    }
-
-    box-list-item{
-        height: 70vh;
-    } */
-}
-
-/* @media (max-width: 700px){
-    time-bar{
-    }
-} */
 
 /* width */
 ::-webkit-scrollbar {
-    width: 9px;
-    height: 9px;
+    width: 5px;
+    height: 5px;
 }
 
 /* Track */
