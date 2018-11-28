@@ -6,7 +6,7 @@
 }
 
 #left-col{
-    max-width: 100px;
+    /* max-width: 100px; */
     flex-grow: 0;
 }
 
@@ -45,10 +45,16 @@ box-list-item{
     /* max-width: 90px; */
     /* overflow-y: scroll; */
     height: 72vh;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
-.headers{
+:host /deep/ .header{
+    background-color: rgba(255, 255, 255);
+    position: sticky;
+    top:0px;
+}
+
+/* .headers{
     display: flex;
     justify-content: space-between;
     margin-right: 5px;
@@ -66,9 +72,8 @@ box-list-item{
 }
 
 .header-box{
-    /* min-width: 150px; */
     flex-grow: 1;
-}
+} */
 
 /* width */
 ::-webkit-scrollbar {
