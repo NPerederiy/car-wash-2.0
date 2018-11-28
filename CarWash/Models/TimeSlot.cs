@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CarWash.Models
+{
+    public partial class TimeSlot
+    {
+        public TimeSlot()
+        {
+            BoxDetails = new HashSet<BoxDetails>();
+            Orders = new HashSet<Order>();
+        }
+
+        public int SlotId { get; set; }
+        public int CellId { get; set; }
+        public int CellCount { get; set; }
+        public bool IsFree { get; set; }
+
+        public ICollection<BoxDetails> BoxDetails { get; set; }
+        public ICollection<Order> Orders { get; set; }
+    }
+}
