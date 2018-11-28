@@ -7,7 +7,7 @@
     text-align: center;
     padding: 25px 7% 30px 7%;
     margin: 0;
-    height: 150px;
+    max-height: 150px;
 }
 
 .navigation{

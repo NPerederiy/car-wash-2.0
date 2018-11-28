@@ -1,10 +1,16 @@
-<!-- <div id="box-holder"> -->
-  <div class="headers">
-    <div class="list-header">Time</div>
-    <div class="list-header box" *ngFor="let i of items">{{ i.getHeader }}</div>
+<div id="component">
+  <div id="left-col">
+    <!-- <div class="header-time item">Time</div> -->
+    <div class="time-bar syncscroll" name="scrollable">
+      <time-bar></time-bar>
+    </div>
+  </div>   
+  <div id="right-col">
+    <!-- <div class="headers">
+      <div class="header-box item" *ngFor="let i of items">{{ i.getHeader }}</div>
+    </div> -->
+    <div class="box-list-container syncscroll" name="scrollable">
+      <box-list-item *ngFor="let i of items" [item]="i"></box-list-item>
+    </div>
   </div>
-  <div class="box-container">
-    <time-bar></time-bar>
-    <box-list-item *ngFor="let i of items" [item]="i"></box-list-item>
-  </div>
-<!-- </div> -->
+</div>
