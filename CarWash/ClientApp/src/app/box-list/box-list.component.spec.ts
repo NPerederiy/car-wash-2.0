@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { BoxListComponent } from './box-list.component';
+import { BoxListComponent } from '@app/box-list/box-list.component';
 
 describe('BoxListComponent', () => {
   let component: BoxListComponent;

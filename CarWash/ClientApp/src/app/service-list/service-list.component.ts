@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Service } from './car-wash-service.model';
+import { Service } from '@shared/models/car-wash-service.model';
 import { IService } from "@shared/models/interfaces/car-wash-service.interface";
 
 @Component({

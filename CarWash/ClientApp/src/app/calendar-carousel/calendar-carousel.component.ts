@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarItem } from './calendar-item.model';
+import { CalendarItem } from '@shared/models/calendar-item.model';
 import { ICalendarItem } from "@shared/models/interfaces/calendar-item.interface";
 import { DayOfWeek } from '@shared/models/day-of-week.enum';
 import { Month } from '@shared/models/month.enum';

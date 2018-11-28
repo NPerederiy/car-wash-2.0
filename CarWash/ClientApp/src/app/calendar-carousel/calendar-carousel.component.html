@@ -1,6 +1,8 @@
 <ngb-carousel  #carousel>
   <ng-template *ngFor="let i of items" ngbSlide>
-    <div class="calendar-item">
+    <div class="calendar-item"  unselectable = "on"
+    onselectstart="return false;" 
+    onmousedown="return false;">
       <div (click)="prevDay()">
         <div class="arrow left"></div>
       </div>

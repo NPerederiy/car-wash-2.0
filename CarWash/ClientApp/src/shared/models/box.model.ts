@@ -1,13 +1,14 @@
 import { IBox } from "@shared/models/interfaces/box.interface";
-import { ITimeInterval } from "@shared/models/interfaces/time-interval.interface";
+import { ITimeSlot } from "@shared/models/interfaces/time-slot.interface";
+import { TimeSlot } from "@shared/models/time-slot.model";
 
 export class Box implements IBox{
     private _header: string;
-    private _freeTime: ITimeInterval[];
+    private _freeTime: ITimeSlot[];
     private _timeCells: boolean[];
 
     get getHeader(): string { return this._header };
-    get getFreeTime(): ITimeInterval[] { return this._freeTime };
+    get getFreeTime(): ITimeSlot[] { return this._freeTime };
     get getTimeCells(): boolean[] { return this._timeCells };
 
     constructor(header: string) {
@@ -22,5 +23,13 @@ export class Box implements IBox{
 
     chooseTimeSlot(){
         console.log('NOT_IMPLEMENTED_FUNC');
+    }
+
+    getTimeSlots(): ITimeSlot[] {
+        let timeSlots: TimeSlot[] = [];
+        
+        console.log('NOT_IMPLEMENTED_FUNC');
+
+        return timeSlots;
     }
 }
