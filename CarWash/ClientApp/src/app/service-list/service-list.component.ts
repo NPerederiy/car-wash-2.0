@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Service } from '@shared/models/car-wash-service.model';
 import { IService } from "@shared/models/interfaces/car-wash-service.interface";
+import { DataService } from './data.service';
 
 @Component({
   selector: 'service-list',
   templateUrl: './service-list.component.html',
-  styleUrls: ['./service-list.component.css']
+  styleUrls: ['./service-list.component.css'],
+  providers: [DataService]
 })
 
 export class ServiceListComponent implements OnInit {
@@ -16,20 +18,25 @@ export class ServiceListComponent implements OnInit {
 
   tPrice: number = 0;
   tTime: number = 0;
-  items: IService[];
+  items: IService[] = [];
 
-  constructor(/*items?: IService[]*/) {
+  constructor(private dataService: DataService) {
     this.header = 'Service list';
-    this.items = /*items ||*/ [
-      new Service('Automatic wash', 10, 5),
-      new Service('Automatic wash', 10, 5),
-      new Service('Automatic wash', 10, 5),
-      new Service('Automatic wash', 10, 5)
-    ];
   }
   
   ngOnInit() {
     this.refreshTotalInfo();
+    this.loadWashServiceList();
+  }
+
+  loadWashServiceList() {
+    this.dataService.getWashServices()
+      .subscribe((data: any[]) => {
+        data.forEach(e => {
+          let a = JSON.parse(JSON.stringify(e));
+          this.items.push(new Service(a['serviceId'], a['name'], a['price'], a['leadTime'], false, a['description'] ));
+        });
+      })
   }
 
   calcTotals(e : IService){

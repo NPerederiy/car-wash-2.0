@@ -3,61 +3,48 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CarWash.Models
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private DbContext context;
-        private DbSet<TEntity> dbSet;
+        private readonly DbContext repositoryContext;
 
-        public Repository(DbContext context)
+        public Repository(DbContext repositoryContext)
         {
-            this.context = context;
-            dbSet = context.Set<TEntity>();
+            this.repositoryContext = repositoryContext;
         }
 
-        public void Create(TEntity item)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            dbSet.Add(item);
-            context.SaveChanges();
+            return await repositoryContext.Set<T>().ToListAsync();
         }
 
-        public void Update(TEntity item)
+        public async Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
         {
-            context.Entry(item).State = EntityState.Modified;
-            context.SaveChanges();
+            return await repositoryContext.Set<T>().Where(expression).ToListAsync();
         }
 
-        public void Delete(TEntity item)
+        public void Create(T entity)
         {
-            dbSet.Remove(item);
-            context.SaveChanges();
+            repositoryContext.Set<T>().Add(entity);
         }
 
-        public void Delete(int id)
+        public void Update(T entity)
         {
-            var task = dbSet.Find(id);
-            if (task != null)
-            {
-                dbSet.Remove(task);
-                context.SaveChanges();
-            }
+            repositoryContext.Set<T>().Update(entity);
         }
 
-        public TEntity Get(int id)
+        public void Delete(T entity)
         {
-            return dbSet.Find(id);
+            repositoryContext.Set<T>().Remove(entity);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task SaveAsync()
         {
-            return dbSet.AsNoTracking().ToList();
-        }
-
-        public IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
-        {
-            return dbSet.AsNoTracking().Where(predicate).ToList();
+            await repositoryContext.SaveChangesAsync();
         }
     }
 }
