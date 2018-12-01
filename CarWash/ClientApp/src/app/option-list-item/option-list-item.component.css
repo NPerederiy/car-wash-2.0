@@ -1,0 +1,181 @@
+.header {
+    font-size: 18pt;
+}
+
+.subheader {
+    font-size: 16pt;
+}
+
+.header, .subheader, .description{
+    font-weight: 300;
+} 
+
+.subheader, .description{
+    color: rgb(160, 160, 160);
+}
+
+.description{
+    font-size: 12pt;
+}
+
+.wrapper {
+    background: url(https://carwad.net/sites/default/files/car-wash-clipart-121263-3254671.png) 20% 1% / cover no-repeat;
+    background-size: 250px;
+    background-position: center top;
+    background-color: rgb(153, 226, 214);
+    min-height: 230px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper:hover .data {
+    transform: translateY(20px);
+}
+
+.wrapper:hover .description{
+    font-size: 14pt;
+    opacity: 1;
+}
+  
+.data {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transform: translateY(60%);
+    transition: transform 0.6s;
+}
+
+.content {
+    padding: 1em;
+    padding-bottom: 1.5em;
+    background-color: #fff;
+} 
+
+
+/* 
+#card-wrapper {
+    position: relative;
+    max-height: 200px;
+}
+
+.card {
+    min-height: 200px;
+    max-height: 200px;
+	position: relative;
+	width: 100%;
+	transition: .8s ease-in-out;
+    border-width: 0;
+	border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	backface-visibility: hidden;
+}
+
+#card-front {
+    background: url(https://carwad.net/sites/default/files/car-wash-clipart-121263-3254671.png) 20% 1% / cover no-repeat;
+    background-size: 226px;
+    background-position: center top;
+    background-color: rgb(153, 226, 214);
+	z-index: 2;
+}
+
+#card-back {
+    top: -200px;
+	transform: rotateY(180deg);
+	background-color: #fff;
+	z-index: 1;
+}
+
+#card-wrapper:hover #card-front {
+    transform: rotateY(180deg);
+}
+
+#card-wrapper:hover #card-back {
+    transform: rotateY(0deg);
+    z-index: 3;
+}
+
+.details {
+    display: inline-block;
+    background-color: #fff;
+    position: absolute;
+    padding: 8px 20px;
+    width: 100%;
+    align-self: center;
+    text-align: center;
+    vertical-align: middle;
+    bottom: 0;
+}
+
+#card-front .details {
+    border-radius: 0 0 10px 10px;
+    height: auto;
+}
+
+#card-back .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 10px;
+    height: 100%;
+}
+
+#cube {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+}
+
+.face {
+  transform-origin: 0 0;
+  position: absolute;
+	top: 50%;
+	left: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.cube-top {
+	background: #cbefe8;
+	transform: rotate(210deg) skew(-30deg) scaleY(0.864);
+}
+.cube-left {
+	background: #52aca2;
+	transform: rotate(90deg) skewX(-30deg) scaleY(0.864);
+}
+.cube-right {
+	background: #8bd7d3;
+	transform: rotate(-30deg) skewX(-30deg) scaleY(0.864);
+}
+
+#tip {
+	position: fixed;
+	top: calc(50% + 190px);
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#tip .arrow {
+	position: relative;
+	width: 0;
+	left: 50%;
+	margin-bottom: -1px;
+	transform: translateX(-50%);
+	border-style: solid;
+	border-width: 0px 15px 10px 15px;
+	border-color: transparent transparent #8bd7d3 transparent;
+}
+#tip .section {
+	padding: 10px;
+	background: #8bd7d3;
+	border-radius: 10px;
+}
+#tip .section p {
+	margin: 0;
+	text-align: center;
+	font-family: 'Cabin';
+	font-size: 8pt;
+	font-weight: bold;
+	letter-spacing: 0.1rem;
+	color: white;
+} */

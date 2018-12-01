@@ -1,0 +1,24 @@
+#component{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 1.5em;
+    grid-row-gap: 1.5em;
+}
+
+.row-item{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+@media (max-width: 952px){
+    #component{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 645px){
+    #component{
+        grid-template-columns: 1fr;
+    }
+}
