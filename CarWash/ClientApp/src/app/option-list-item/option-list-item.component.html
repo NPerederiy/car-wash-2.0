@@ -1,0 +1,19 @@
+<div id="card-wrapper">
+  <div id="card-front" class="card">
+    <div class="details">
+      <div class="header">
+        {{ option.getName }}
+      </div>
+      <div class="subheader">
+        ${{ option.getPrice }}
+      </div>
+    </div>
+  </div>
+  <div id="card-back" class="card">
+    <div class="details">
+      <div class="description">
+        {{ option.getDescription }}
+      </div>
+    </div>
+  </div>
+</div>
