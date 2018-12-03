@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OptionListComponent } from './option-list/option-list.component';
 import { OptionListItemComponent } from './option-list-item/option-list-item.component';
+import { TimePickerComponent } from './time-picker/time-picker.component';
+import { ErrorProviderComponent } from './error-provider/error-provider.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { OptionListItemComponent } from './option-list-item/option-list-item.com
     // BoxListItemComponent,
     // TimeBarComponent,
     OptionListComponent,
-    OptionListItemComponent
+    OptionListItemComponent,
+    TimePickerComponent,
+    ErrorProviderComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -37,7 +41,9 @@ import { OptionListItemComponent } from './option-list-item/option-list-item.com
     FormsModule,
     // NgbModule,
     RouterModule.forRoot([
-      // { path: 'fetch-data', component: FetchDataComponent },
+      { path: '', component: OptionListComponent },
+      { path: 'pick-time', component: TimePickerComponent },
+      { path: '**', component: ErrorProviderComponent },
     ])
   ],
   providers: [],

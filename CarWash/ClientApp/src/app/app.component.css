@@ -4,7 +4,6 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: antiquewhite;
   max-width: calc(410px*3);
   padding: 20px 1em;
   margin: auto;
@@ -17,7 +16,6 @@
   border-radius: 45px;
   border-style: none;
   padding: 5px 20px;
-  margin: 10px auto;
   min-width: 200px;
   max-width: 240px;
   font-size: 16pt;
@@ -26,8 +24,8 @@
 
 :host /deep/ .button:hover{
   color: #fff;
-  background-color: /*#2EE59D*/ #7addcd;
-  box-shadow: 0px 15px 20px rgba(/*46, 229, 157*/ #7addcd , 0.4);
+  background-color: #7addcd;
+  box-shadow: 0px 15px 20px rgba( #7addcd , 0.4);
 }
 
 :host /deep/ .clickable{
@@ -40,11 +38,11 @@
   user-select: none;
 }
 
-.flex-element{
+:host /deep/ .flex-element{
   flex-grow: 1;
   flex-shrink: 1;
   align-self: center;
   text-align: center;
   padding: 0 auto;
-  margin-bottom: 2em;
+  margin: 1em 0;
 }

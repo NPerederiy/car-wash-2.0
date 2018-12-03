@@ -10,7 +10,7 @@ import { Service } from '@shared/models/car-wash-service.model';
   providers: [DataService]
 })
 export class OptionListComponent implements OnInit {
-  
+  btnTitle: string = "Select";
   items: IService[] = [];
 
   constructor(private dataService: DataService) {
