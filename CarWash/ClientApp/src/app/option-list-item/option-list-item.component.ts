@@ -6,12 +6,22 @@ import { IService } from '@shared/models/interfaces/car-wash-service.interface';
   templateUrl: './option-list-item.component.html',
   styleUrls: ['./option-list-item.component.css']
 })
+
 export class OptionListItemComponent implements OnInit {
   @Input() option : IService;
-  
-  constructor() { }
+  description: string = '';
 
+  constructor() { 
+  }
+  
   ngOnInit() {
+    let temp = this.option.getDescription.split('\\n');    
+    temp.forEach(e => {
+      this.description += e + '<br/>';
+    });
   }
 
+  getCheckmarkOpacity() {
+    return this.option.isChecked ? 0.7 : 0;
+  }
 }

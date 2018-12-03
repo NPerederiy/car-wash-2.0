@@ -1,6 +1,6 @@
 <div id="list-section" class="flex-element">
   <div class="row-item" *ngFor="let i of items">
-    <option-list-item class="clickable" [option]="i" (click)="sayHello()"></option-list-item>
+    <option-list-item class="clickable" [option]="i" (click)="checkOption(i)"></option-list-item>
   </div>
 </div>
-<button class="button clickable flex-element">{{ btnTitle }}</button>
+<button class="button clickable flex-element" (click)="selectOptions()">{{ btnTitle }}</button>
