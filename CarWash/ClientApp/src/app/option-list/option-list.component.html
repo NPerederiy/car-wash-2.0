@@ -1,3 +1,4 @@
+<div class="title">{{ header }}</div>
 <div id="list-section" class="flex-element">
   <div class="row-item" *ngFor="let i of items">
     <option-list-item class="clickable" [option]="i" (click)="checkOption(i)"></option-list-item>

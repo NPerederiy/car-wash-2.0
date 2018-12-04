@@ -1,3 +1,10 @@
-<p>
-  time-picker works!
-</p>
+<div class="title">{{ header }}</div>
+<div id="time-picker-section">
+  <div class="grid-item column-2 highlighted">From</div>
+  <time-picker-timeline [timeUnits]=hFrom (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
+  <time-picker-timeline [timeUnits]=mFrom (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
+  <div class="grid-item column-6 highlighted">To</div>
+  <time-picker-timeline [timeUnits]=hTo (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
+  <time-picker-timeline [timeUnits]=mTo (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
+</div>
+<button class="button clickable flex-element" (click)="pickTime()">{{ btnTitle }}</button>

@@ -11,12 +11,15 @@ import { Router } from '@angular/router';
   providers: [DataService]
 })
 export class OptionListComponent implements OnInit {
-  btnTitle: string = "Select";
+  header: string;
+  btnTitle: string;
   items: IService[] = [];
   totalTime: number = 0;
   chosenItems: IService[] = [];
 
   constructor(private dataService: DataService, private router: Router) {
+    this.header = "Select the car wash services you need";
+    this.btnTitle = "Select";
   }
   
   ngOnInit() {

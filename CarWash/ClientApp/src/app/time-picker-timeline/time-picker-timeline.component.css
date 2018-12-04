@@ -1,0 +1,28 @@
+#timeline-section{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 50px;
+    grid-template-rows: 30px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 30px; 
+    grid-column-gap: 0.5em;
+    grid-row-gap: 1em;
+    justify-content: center;    
+    align-items: stretch;
+}
+
+.number, .arrow-up, .arrow-down{
+    font-size: 16pt;
+}
+
+.number:hover, .arrow-up:hover, .arrow-down:hover{
+    background-color:rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+}
+
+.arrow-up, .arrow-down{
+    padding-top: 7%;
+    height: 30px;
+}
+
+.arrow-down{
+    transform: rotate(180deg);
+}

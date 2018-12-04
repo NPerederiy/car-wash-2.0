@@ -18,6 +18,8 @@ import { OptionListComponent } from './option-list/option-list.component';
 import { OptionListItemComponent } from './option-list-item/option-list-item.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { ErrorProviderComponent } from './error-provider/error-provider.component';
+import { TimePickerTimelineComponent } from './time-picker-timeline/time-picker-timeline.component';
+// import { MouseWheelDirective } from './mousewheel.directive';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ErrorProviderComponent } from './error-provider/error-provider.componen
     OptionListComponent,
     OptionListItemComponent,
     TimePickerComponent,
-    ErrorProviderComponent
+    ErrorProviderComponent,
+    TimePickerTimelineComponent, 
+    // MouseWheelDirective
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
