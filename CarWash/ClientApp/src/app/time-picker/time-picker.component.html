@@ -1,10 +1,10 @@
 <div class="title">{{ header }}</div>
-<div id="time-picker-section">
+<div id="time-picker-section" unselectable = "on" onselectstart="return false;">
   <div class="grid-item column-2 highlighted">From</div>
-  <time-picker-timeline [timeUnits]=hFrom (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
-  <time-picker-timeline [timeUnits]=mFrom (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
+  <time-picker-timeline [time]='timeFrom' [unitToDisplay]='0' [step]='stepH' (mouseWheelUp)="hUp(timeFrom)" (mouseWheelDown)="hDown(timeFrom)"></time-picker-timeline>
+  <time-picker-timeline [time]='timeFrom' [unitToDisplay]='1' [step]='stepM' (mouseWheelUp)="mUp(timeFrom)" (mouseWheelDown)="mDown(timeFrom)"></time-picker-timeline>
   <div class="grid-item column-6 highlighted">To</div>
-  <time-picker-timeline [timeUnits]=hTo (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
-  <time-picker-timeline [timeUnits]=mTo (mouseWheelUp)="scrollUp(event)" (mouseWheelDown)="scrollDown(event)"></time-picker-timeline>
+  <time-picker-timeline [time]='timeTo' [unitToDisplay]='0' [step]='stepH' (mouseWheelUp)="hUp(timeTo)" (mouseWheelDown)="hDown(timeTo)"></time-picker-timeline>
+  <time-picker-timeline [time]='timeTo' [unitToDisplay]='1' [step]='stepM' (mouseWheelUp)="mUp(timeTo)" (mouseWheelDown)="mDown(timeTo)"></time-picker-timeline>
 </div>
 <button class="button clickable flex-element" (click)="pickTime()">{{ btnTitle }}</button>

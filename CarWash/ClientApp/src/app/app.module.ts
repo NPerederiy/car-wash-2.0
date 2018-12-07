@@ -19,6 +19,7 @@ import { OptionListItemComponent } from './option-list-item/option-list-item.com
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { ErrorProviderComponent } from './error-provider/error-provider.component';
 import { TimePickerTimelineComponent } from './time-picker-timeline/time-picker-timeline.component';
+import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 // import { MouseWheelDirective } from './mousewheel.directive';
 
 @NgModule({
@@ -36,7 +37,8 @@ import { TimePickerTimelineComponent } from './time-picker-timeline/time-picker-
     OptionListItemComponent,
     TimePickerComponent,
     ErrorProviderComponent,
-    TimePickerTimelineComponent, 
+    TimePickerTimelineComponent,
+    TimeFormatPipe, 
     // MouseWheelDirective
   ],
   imports: [

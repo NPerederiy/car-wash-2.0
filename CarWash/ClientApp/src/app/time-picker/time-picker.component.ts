@@ -1,4 +1,7 @@
 import { Component, OnInit} from '@angular/core';
+import { Time } from '@shared/models/time.model';
+import { TimeConvention } from '@shared/models/time-convention.enum';
+import { ITime } from '@shared/models/interfaces/time.interface';
 
 @Component({
   selector: 'time-picker',
@@ -9,25 +12,64 @@ import { Component, OnInit} from '@angular/core';
 export class TimePickerComponent implements OnInit {
   header: string;
   btnTitle: string;
-  hFrom: string[] = ['14','14','14','14','14','14','15']; 
-  mFrom: string[] = ['00','10','20','30','40','50','00']; 
-  hTo: string[] = ['15','15','15','15','15','15','16']; 
-  mTo: string[] = ['00','10','20','30','40','50','00']; 
+  timeFrom: Time;
+  timeTo: Time;
+  date: Date = new Date();
+  stepH: number = 60;
+  stepM: number = 15;
  
-  constructor() { 
+  constructor() {     
     this.header = "Сhoose a car wash time convenient for you";
     this.btnTitle = "Pick the time";
   }
-
+  
   ngOnInit() {
+    this.timeFrom = new Time(this.date.getHours(), this.date.getMinutes(), TimeConvention["24-hour"]);
+    console.log('before round(5):'+this.timeFrom);
+    this.timeFrom = this.timeFrom.roundTo(this.stepM);
+    console.log('after round(5):'+this.timeFrom);
+    
+    this.timeTo = this.timeFrom.inc(60);
   }
 
-  scrollUp(e: any){
-    console.log("scroll up");
+  scrollMinutesUp(time: ITime){
+    this.mUp(time);
+    console.log("scroll m up");
   }
 
-  scrollDown(e: any){
-    console.log("scroll down");
+  scrollMinutesDown(time: ITime){
+    this.mDown(time);
+    console.log("scroll m down");
+  }
+
+  scrollHoursUp(time: ITime){
+    this.hUp(time);
+    console.log("scroll h up");
+  }
+
+  scrollHoursDown(time: ITime){
+    this.hDown(time);
+    console.log("scroll h down");
+  }
+
+  hUp(time: ITime){
+    time = time.dec(this.stepH);
+    console.log(time);
+  }
+
+  mUp(time: ITime){
+    time = time.dec(this.stepM);
+    console.log(time);
+  }
+
+  hDown(time: ITime){
+    time = time.inc(this.stepH);
+    console.log(time);
+  }
+
+  mDown(time: ITime){
+    time = time.inc(this.stepM);
+    console.log(time);
   }
 
   pickTime(){

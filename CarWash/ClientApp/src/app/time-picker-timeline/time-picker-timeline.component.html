@@ -1,5 +1,7 @@
 <div id="timeline-section">
-  <div class="grid-item row-1 arrow-up">^</div>
-  <div class="grid-item row-9 arrow-down">^</div>
-  <div class="grid-item row-{{j+2}} number" [ngClass]="{'highlighted': j == 3}" *ngFor="let i of timeUnits; let j = index">{{ i }}</div>
+  <div class="grid-item row-1 arrow-up" (click)='up()'>^</div>
+  <div class="grid-item row-9 arrow-down" (click)='down()'>^</div>
+  <div class="grid-item row-{{j+2}} number" [ngClass]="{'highlighted': j === 3}" *ngFor="let i of timeUnits; let j = index">
+    {{ i | timeFormat }}
+  </div>
 </div>

@@ -7,6 +7,8 @@ export interface ITime{
     timePeriod: TimePeriod;
     timeConvention: TimeConvention;
 
-    increment(step: number);
+    inc(step: number);
+    dec(step: number);
+    roundTo(value: number);
     convertToMinutes(): number;
 }

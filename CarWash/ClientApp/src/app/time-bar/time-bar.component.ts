@@ -34,7 +34,7 @@ export class TimeBarComponent implements OnInit {
     let temp: Time;
     this.timeSlots = [ time ];
     for (let i = 1; i <= slotCount; i++) {
-      temp = time.increment(this.step)
+      temp = time.inc(this.step)
       this.timeSlots.push(temp);      
       time = temp;
     }

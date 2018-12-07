@@ -26,3 +26,15 @@
 .arrow-down{
     transform: rotate(180deg);
 }
+
+.item-1{
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.item-2{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-3{
+    background-color: rgba(255, 255, 255, 0.2);
+}

@@ -20,7 +20,7 @@ export class Time implements ITime{
     constructor(hours?: number, minutes?: number, timeConvention?: TimeConvention, timePeriod?: TimePeriod) {
         this._hours = hours || 0;
         this._minutes = minutes || 0;
-        this._timeConvention = timeConvention || TimeConvention["12-hour"];
+        this._timeConvention = timeConvention || TimeConvention["24-hour"];
         this._timePeriod = timePeriod || TimePeriod.AM;
     }
     
@@ -30,16 +30,46 @@ export class Time implements ITime{
         return `${addZeros(changeHourDisplay(this._hours))}:${addZeros(this._minutes)}${format}`;
         
         function addZeros(a: number): string{
-            return (a - a % 10) / 10 == 0  ? `0${a}` : `${a}`;
+            return (a - a % 10) / 10 == 0 ? `0${a}` : `${a}`;
         }
 
         function changeHourDisplay(a: number): number{
-            return a == 0  ? 12 : a;
+            return a == 0 ? Time.HOURS_IN_HALFDAY : a;
         }
     }
 
-    increment(step: number){
+    inc(step: number){
         return Time.convertToTime(this.convertToMinutes() + step, this._timeConvention);
+    }
+
+    dec(step: number){
+        let temp = this.convertToMinutes() - step;
+        temp += temp < 0 ? 
+            this.timeConvention == TimeConvention["12-hour"] ? 
+                Time.MINUTES_IN_HOUR * Time.HOURS_IN_HALFDAY : 
+                Time.MINUTES_IN_HOUR * Time.HOURS_IN_DAY
+            : 0;
+        return Time.convertToTime(temp, this._timeConvention);
+    }
+
+    roundTo(value: number){    
+        let h = this.hours;
+        let m = this.minutes;
+        m += value - m % value;
+        
+        if(m >= Time.MINUTES_IN_HOUR){
+            m -= Time.MINUTES_IN_HOUR;
+            h++;
+        }
+
+        console.log('before r:' + this);
+        console.log('h:' + this.hours);
+        console.log('h*60: ' + h*60);
+    
+        let t = Time.convertToTime(m + h * Time.MINUTES_IN_HOUR, this._timeConvention);
+        console.log('after r: ' + t);
+        
+        return t;
     }
 
     convertToMinutes(): number{
@@ -67,7 +97,7 @@ export class Time implements ITime{
                 return new Time(temp.b, m, timeConvention, tp);
             }
             case TimeConvention["24-hour"]:{
-                let temp = split(h, this.HOURS_IN_HALFDAY);
+                let temp = split(h, this.HOURS_IN_DAY);
                 return new Time(temp.b, m, timeConvention);
             }
         }
