@@ -17,6 +17,32 @@ export class Time implements ITime{
     get timePeriod(): TimePeriod { return this._timePeriod }
     get timeConvention(): TimeConvention { return this._timeConvention }
 
+    set hours(h: number){        
+        let delta = this._hours - h; 
+        if(delta < 0){
+            let temp = this.inc(-delta * Time.MINUTES_IN_HOUR);
+            this._hours = temp._hours;
+            this._minutes = temp._minutes;
+        } else {
+            let temp = this.dec(delta * Time.MINUTES_IN_HOUR);
+            this._hours = temp._hours;
+            this._minutes = temp._minutes;
+        }
+    }
+    
+    set minutes(m: number){
+        let delta = this._minutes - m; 
+        if(delta < 0){
+            let temp = this.inc(-delta);
+            this._hours = temp._hours;
+            this._minutes = temp._minutes;
+        } else {
+            let temp = this.dec(delta);
+            this._hours = temp._hours;
+            this._minutes = temp._minutes;
+        }
+    }
+
     constructor(hours?: number, minutes?: number, timeConvention?: TimeConvention, timePeriod?: TimePeriod) {
         this._hours = hours || 0;
         this._minutes = minutes || 0;
@@ -28,13 +54,17 @@ export class Time implements ITime{
         let format = this._timeConvention == TimeConvention["12-hour"] ? 
             this._timePeriod == TimePeriod.AM ? ' a.m.' : ' p.m.' : '';
         return `${addZeros(changeHourDisplay(this._hours))}:${addZeros(this._minutes)}${format}`;
-        
+
         function addZeros(a: number): string{
             return (a - a % 10) / 10 == 0 ? `0${a}` : `${a}`;
         }
 
+        // TODO: To fix the problem of displaying time in 12-hour format
         function changeHourDisplay(a: number): number{
-            return a == 0 ? Time.HOURS_IN_HALFDAY : a;
+            // if(this._timeConvention == TimeConvention["12-hour"] && this._timePeriod == TimePeriod.PM){
+            //     return a == 0 ? Time.HOURS_IN_HALFDAY : a;
+            // }
+            return a;
         }
     }
 
@@ -44,38 +74,31 @@ export class Time implements ITime{
 
     dec(step: number){
         let temp = this.convertToMinutes() - step;
-        temp += temp < 0 ? 
-            this.timeConvention == TimeConvention["12-hour"] ? 
-                Time.MINUTES_IN_HOUR * Time.HOURS_IN_HALFDAY : 
-                Time.MINUTES_IN_HOUR * Time.HOURS_IN_DAY
-            : 0;
+        if(temp < 0){
+            if(this.timeConvention == TimeConvention["12-hour"]){
+                temp += Time.MINUTES_IN_HOUR * Time.HOURS_IN_HALFDAY;
+            } else {
+                temp += Time.MINUTES_IN_HOUR * Time.HOURS_IN_DAY;
+            }
+        }
         return Time.convertToTime(temp, this._timeConvention);
     }
 
     roundTo(value: number){    
         let h = this.hours;
         let m = this.minutes;
-        m += value - m % value;
-        
+        m += value - m % value;       
         if(m >= Time.MINUTES_IN_HOUR){
             m -= Time.MINUTES_IN_HOUR;
             h++;
-        }
-
-        console.log('before r:' + this);
-        console.log('h:' + this.hours);
-        console.log('h*60: ' + h*60);
-    
-        let t = Time.convertToTime(m + h * Time.MINUTES_IN_HOUR, this._timeConvention);
-        console.log('after r: ' + t);
-        
-        return t;
+        }        
+        return Time.convertToTime(m + h * Time.MINUTES_IN_HOUR, this._timeConvention);
     }
 
     convertToMinutes(): number{
         let h = this._hours;
         if( this._timeConvention == TimeConvention["12-hour"] && this._timePeriod == TimePeriod.PM){
-            h += 12; // !!!!! attention when the time is 12:XX pm
+            h += Time.HOURS_IN_HALFDAY; // pay attention when the time is 12:XX pm
         }
         return Time.convertToMinutes(h, this._minutes);
     }
@@ -86,30 +109,30 @@ export class Time implements ITime{
         
         {
             let temp = split(minutes, this.MINUTES_IN_HOUR);
-            h = temp.a;
-            m = temp.b;
+            h = temp.h;
+            m = temp.m;
         }
         
         switch(timeConvention){
             case TimeConvention["12-hour"]:{
                 let temp = split(h, this.HOURS_IN_HALFDAY);
-                let tp = temp.a % 2 == 0 ? TimePeriod.AM : TimePeriod.PM;
-                return new Time(temp.b, m, timeConvention, tp);
+                let tp = temp.h % 2 == 0 ? TimePeriod.AM : TimePeriod.PM;
+                return new Time(temp.m, m, timeConvention, tp);
             }
             case TimeConvention["24-hour"]:{
                 let temp = split(h, this.HOURS_IN_DAY);
-                return new Time(temp.b, m, timeConvention);
+                return new Time(temp.m, m, timeConvention);
             }
         }
 
-        function split(timeUnit: number, divisor: number): { a: number, b: number }{
-            let a = 0;        // f.e.  a - hours
-            let b = timeUnit; // f.e.  b - minutes
+        function split(timeUnit: number, divisor: number): { h: number, m: number }{
+            let h = 0;
+            let m = timeUnit;
 
-            a += div(b, divisor);
-            b -= a * divisor;
+            h += div(m, divisor);
+            m -= h * divisor;
 
-            return {a, b};
+            return {h, m};
         }
 
         function div(val, by){

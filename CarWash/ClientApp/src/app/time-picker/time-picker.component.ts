@@ -2,7 +2,8 @@ import { Component, OnInit} from '@angular/core';
 import { Time } from '@shared/models/time.model';
 import { TimeConvention } from '@shared/models/time-convention.enum';
 import { ITime } from '@shared/models/interfaces/time.interface';
-
+import { TimeUnit } from '@shared/models/time-unit.enum';
+ 
 @Component({
   selector: 'time-picker',
   templateUrl: './time-picker.component.html',
@@ -14,9 +15,9 @@ export class TimePickerComponent implements OnInit {
   btnTitle: string;
   timeFrom: Time;
   timeTo: Time;
-  date: Date = new Date();
-  stepH: number = 60;
-  stepM: number = 15;
+  stepH: number = 1;
+  stepM: number = 10;
+  private date: Date = new Date();
  
   constructor() {     
     this.header = "Сhoose a car wash time convenient for you";
@@ -24,52 +25,38 @@ export class TimePickerComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.timeFrom = new Time(this.date.getHours(), this.date.getMinutes(), TimeConvention["24-hour"]);
-    console.log('before round(5):'+this.timeFrom);
+    this.timeFrom = new Time(this.date.getHours(), this.date.getMinutes()+1, TimeConvention["24-hour"]);
+    console.log(`before round(${this.stepM}): ${this.timeFrom}`);
     this.timeFrom = this.timeFrom.roundTo(this.stepM);
-    console.log('after round(5):'+this.timeFrom);
+    console.log(`after round(${this.stepM}): ${this.timeFrom}`);
     
     this.timeTo = this.timeFrom.inc(60);
   }
 
-  scrollMinutesUp(time: ITime){
-    this.mUp(time);
-    console.log("scroll m up");
+  updateHoursFrom(value: any){
+    this.updateTime(this.timeFrom, TimeUnit.Hour, value);
   }
 
-  scrollMinutesDown(time: ITime){
-    this.mDown(time);
-    console.log("scroll m down");
+  updateMinutesFrom(value: any){
+    this.updateTime(this.timeFrom, TimeUnit.Minute, value);
   }
 
-  scrollHoursUp(time: ITime){
-    this.hUp(time);
-    console.log("scroll h up");
+  updateHoursTo(value: any){
+    this.updateTime(this.timeTo, TimeUnit.Hour, value);
   }
 
-  scrollHoursDown(time: ITime){
-    this.hDown(time);
-    console.log("scroll h down");
+  updateMinutesTo(value: any){
+    this.updateTime(this.timeTo, TimeUnit.Minute, value);
   }
 
-  hUp(time: ITime){
-    time = time.dec(this.stepH);
-    console.log(time);
-  }
-
-  mUp(time: ITime){
-    time = time.dec(this.stepM);
-    console.log(time);
-  }
-
-  hDown(time: ITime){
-    time = time.inc(this.stepH);
-    console.log(time);
-  }
-
-  mDown(time: ITime){
-    time = time.inc(this.stepM);
-    console.log(time);
+  private updateTime(time: ITime, unit: TimeUnit, value: number){
+    console.log(`time is ${time}`);
+    if(unit === TimeUnit.Hour){
+      time.hours = value;
+    } else {
+      time.minutes = value;
+    }
+    console.log(`new time value: ${time}`);
   }
 
   pickTime(){
