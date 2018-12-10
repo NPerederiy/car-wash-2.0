@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarWash.Models;
+using CarWash.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 //using System.Web.Http.Cors;
 
 namespace CarWash.Controllers
@@ -13,33 +16,31 @@ namespace CarWash.Controllers
     [ApiController]
     public class TimeController : ControllerBase
     {
+        private readonly CarWashDBContext context;
+
+        public TimeController(CarWashDBContext context)
+        {
+            this.context = context;
+        }
+
         [HttpPost]
-        public IActionResult Post(/*[FromBody]WashService[] washServices*/)
+        public IActionResult Post([FromBody]PostSelectedOptionsAndTime body)
         {
             if (ModelState.IsValid)
             {
-                return Ok(new string[] { "16:00" });
+                try
+                {
+                    var tms = new TimeManagementService(context);
+                    var response = tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
+                    return Ok(response.Result);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return BadRequest(ex);
+                }
             }
             return BadRequest(ModelState);
         }
-
-        [HttpGet]
-        public IActionResult GetTime()
-        {
-            return Ok("17:00");
-        }
-
-        //public IActionResult Post([FromBody]WashService[] washServices)
-        //{
-        //    //if (user != null)
-        //    //    user.Age += 10;
-
-        //    return new JsonResult("16:00");
-        //    //Json(user,
-        //    //    new JsonSerializerSettings
-        //    //    {
-        //    //        ContractResolver = new CamelCasePropertyNamesContractResolver()
-        //    //    });
-        //}
     }
 }

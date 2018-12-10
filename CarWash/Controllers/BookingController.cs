@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CarWash.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +15,19 @@ namespace CarWash.Controllers
     public class BookingController : ControllerBase
     {
         [HttpPost]
-        public IActionResult Post([FromBody]bool confirm)
+        public IActionResult Post([FromBody]PostSubmit body)
         {
             if (ModelState.IsValid)
             {
-                // some action
-                return Ok();
+                try
+                {
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return BadRequest(ex);
+                }
             }
             return BadRequest(ModelState);
         }
