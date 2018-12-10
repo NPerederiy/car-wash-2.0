@@ -18,4 +18,9 @@ insert WashServices values
 	('Complete Including Engine', 'Degrease and clean engine', $280, 30),
 	('Interior OR Exterior Detail', 'Depending on condition of vehicle', $139, 20)
 
+insert TimeSlots values
+	(0,168,1),
+	(0,168,1),
+	(0,168,1)
+	
 GO
