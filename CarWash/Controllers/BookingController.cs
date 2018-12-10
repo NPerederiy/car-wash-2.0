@@ -11,5 +11,15 @@ namespace CarWash.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
+        [HttpPost]
+        public IActionResult Post([FromBody]bool confirm)
+        {
+            if (ModelState.IsValid)
+            {
+                // some action
+                return Ok();
+            }
+            return BadRequest(ModelState);
+        }
     }
 }
