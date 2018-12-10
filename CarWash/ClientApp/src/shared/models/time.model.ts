@@ -68,11 +68,11 @@ export class Time implements ITime{
         }
     }
 
-    inc(step: number){
+    inc(step: number): Time{
         return Time.convertToTime(this.convertToMinutes() + step, this._timeConvention);
     }
 
-    dec(step: number){
+    dec(step: number): Time{
         let temp = this.convertToMinutes() - step;
         if(temp < 0){
             if(this.timeConvention == TimeConvention["12-hour"]){
@@ -84,15 +84,19 @@ export class Time implements ITime{
         return Time.convertToTime(temp, this._timeConvention);
     }
 
-    roundTo(value: number){    
+    roundTo(value: number): Time{    
         let h = this.hours;
         let m = this.minutes;
-        m += value - m % value;       
+        m = Time.roundMinutes(m, value);     
         if(m >= Time.MINUTES_IN_HOUR){
             m -= Time.MINUTES_IN_HOUR;
             h++;
         }        
         return Time.convertToTime(m + h * Time.MINUTES_IN_HOUR, this._timeConvention);
+    }
+
+    static roundMinutes(item: number, to: number): number{
+        return item += to - item % to;
     }
 
     convertToMinutes(): number{

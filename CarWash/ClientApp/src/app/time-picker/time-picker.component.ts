@@ -3,7 +3,9 @@ import { Time } from '@shared/models/time.model';
 import { TimeConvention } from '@shared/models/time-convention.enum';
 import { ITime } from '@shared/models/interfaces/time.interface';
 import { TimeUnit } from '@shared/models/time-unit.enum';
- 
+import { DataService } from '@app/services/data.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'time-picker',
   templateUrl: './time-picker.component.html',
@@ -18,19 +20,26 @@ export class TimePickerComponent implements OnInit {
   stepH: number = 1;
   stepM: number = 10;
   private date: Date = new Date();
- 
-  constructor() {     
+  private totalTime: number;
+
+  constructor(private dataService: DataService, private router: Router) {     
     this.header = "Сhoose a car wash time convenient for you";
     this.btnTitle = "Pick the time";
   }
   
   ngOnInit() {
+    this.dataService.totalTime.subscribe(time => this.totalTime = time);
+
     this.timeFrom = new Time(this.date.getHours(), this.date.getMinutes()+1, TimeConvention["24-hour"]);
     console.log(`before round(${this.stepM}): ${this.timeFrom}`);
     this.timeFrom = this.timeFrom.roundTo(this.stepM);
     console.log(`after round(${this.stepM}): ${this.timeFrom}`);
-    
-    this.timeTo = this.timeFrom.inc(60);
+
+    if(this.totalTime <= 60){
+      this.timeTo = this.timeFrom.inc(60);
+    } else {
+      this.timeTo = this.timeFrom.inc(Time.roundMinutes(this.totalTime, this.stepM * 3));
+    }
   }
 
   updateHoursFrom(value: any){
@@ -60,6 +69,12 @@ export class TimePickerComponent implements OnInit {
   }
 
   pickTime(){
-    console.log("picked");
+    this.dataService.postSelectedTime(this.timeFrom.toString(), this.timeTo.toString())
+    .subscribe((data: any[]) => {
+      this.dataService.updateProposedTime(data[0]);
+      },
+      error => console.log(error)
+    );
+    this.router.navigateByUrl('/book-time');
   }
 }
