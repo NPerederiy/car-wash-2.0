@@ -22,20 +22,22 @@ export class DataService {
     }
 
     postSelectedTime(timeFrom: string, timeTo: string) {
-        let body: { options: IService[], timeFrom: string, timeTo: string };
-        console.log(this.options.value);
-        
-        // body.options = this.options.value;
-        // body.timeFrom = timeFrom;
-        // body.timeTo = timeTo;
+        let body: any = {};   
+        let ids: number[] = [];     
+        this.options.value.forEach(el => {
+            ids.push(el.getId);       
+        });
+        body.selectedOptionId = ids;
+        body.timeFrom = timeFrom;
+        body.timeTo = timeTo;
         return this.http.post("/api/Time", body); 
     }
 
     postSubmit(name: string, phone: string, confirm: boolean) {
-        let body: { name: string, phone: string, confirm: boolean };
-        // body.name = name;
-        // body.phone = phone;
-        // body.confirm = confirm;
+        let body: any = {};
+        body.name = name;
+        body.phone = phone;
+        body.confirm = confirm;
         return this.http.post("/api/Booking", body); 
     }
 

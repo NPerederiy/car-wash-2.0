@@ -34,7 +34,7 @@ export class OptionListComponent implements OnInit {
     this.dataService.getWashOptions()
       .subscribe((data: any[]) => {
         data.forEach(e => {
-          this.items.push(new Service(e.serviceId, e.name, e.price, e.leadTime, false, e.description));
+          this.items.push(new Service(e._id, e._name, e._price, e._leadTime, false, e._descr));
         });
       })
   }
