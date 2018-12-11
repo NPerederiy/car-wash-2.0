@@ -24,15 +24,15 @@ namespace CarWash.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]PostSelectedOptionsAndTime body)
+        public async Task<IActionResult> Post([FromBody]PostSelectedOptionsAndTime body)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var tms = new TimeManagementService(context);
-                    var response = tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
-                    return Ok(response.Result);
+                    var response = await tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
+                    return Ok(response);
                 }
                 catch (Exception ex)
                 {

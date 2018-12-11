@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { BehaviorSubject} from 'rxjs';
+import { map } from 'rxjs/operators';
 import { IService } from '@shared/models/interfaces/car-wash-service.interface';
 
 @Injectable()
@@ -15,10 +16,11 @@ export class DataService {
     totalTime = this.time.asObservable();
     proposedTime = this.propTime.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: Http) {}
 
     getWashOptions() {
-        return this.http.get("/api/ServiceList");
+        return this.http.get("/api/ServiceList")
+            .pipe(map(res => res.json()));
     }
 
     postSelectedTime(timeFrom: string, timeTo: string) {
@@ -30,7 +32,12 @@ export class DataService {
         body.selectedOptionId = ids;
         body.timeFrom = timeFrom;
         body.timeTo = timeTo;
-        return this.http.post("/api/Time", body); 
+        
+        let headers = new Headers({"Accept": "text/plain"});
+        let requestOptions = new RequestOptions({ headers : headers });
+
+        return this.http.post("/api/Time", body, requestOptions)
+            .pipe(map(res => res.text()));
     }
 
     postSubmit(name: string, phone: string, confirm: boolean) {
@@ -38,7 +45,8 @@ export class DataService {
         body.name = name;
         body.phone = phone;
         body.confirm = confirm;
-        return this.http.post("/api/Booking", body); 
+        return this.http.post("/api/Booking", body)
+            .pipe(map(res => res.json())); 
     }
 
     updateProposedTime(time: string) {

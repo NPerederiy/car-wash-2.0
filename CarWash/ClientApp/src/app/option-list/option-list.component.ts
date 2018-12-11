@@ -32,7 +32,7 @@ export class OptionListComponent implements OnInit {
 
   loadWashServiceList() {
     this.dataService.getWashOptions()
-      .subscribe((data: any[]) => {
+      .subscribe((data: any) => {
         data.forEach(e => {
           this.items.push(new Service(e._id, e._name, e._price, e._leadTime, false, e._descr));
         });

@@ -70,10 +70,10 @@ export class TimePickerComponent implements OnInit {
 
   pickTime(){
     this.dataService.postSelectedTime(this.timeFrom.toString(), this.timeTo.toString())
-    .subscribe((data: any[]) => {
+    .subscribe((data: any) => {
       console.log(data);
       
-      this.dataService.updateProposedTime(data[0]);
+      this.dataService.updateProposedTime(data);
       },
       error => console.log(error)
     );
