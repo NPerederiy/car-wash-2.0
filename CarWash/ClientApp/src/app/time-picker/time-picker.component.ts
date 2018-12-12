@@ -75,7 +75,7 @@ export class TimePickerComponent implements OnInit {
       
       this.dataService.updateProposedTime(data);
       },
-      error => console.log(error)
+      error => console.error(error)
     );
     this.router.navigateByUrl('/book-time');
   }

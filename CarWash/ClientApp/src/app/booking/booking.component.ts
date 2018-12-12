@@ -9,21 +9,25 @@ import { DataService } from '@app/services/data.service';
 export class BookingComponent implements OnInit {
   header: string;
   proposedTime: string;
-  btnTitle: string;
+  btnConfirmTitle: string;
+  btnDeclineTitle: string;
 
   constructor(private dataService: DataService) { 
     this.header = 'Nearest avaliable time is';
-    this.btnTitle = 'Submit';
+    this.btnConfirmTitle = 'Confirm';
+    this.btnDeclineTitle = 'Go back';
   }
 
   ngOnInit() {
     this.dataService.proposedTime.subscribe(time => this.proposedTime = time);
   }
 
-  submit() {
-    this.dataService.postSubmit('Name', '+380123456789', true);
-    console.log('success!');
-    
+  confirm() {
+    this.dataService.postAnswer(true, 'Name', '+380123456789');
+  }
+
+  decline() {
+    this.dataService.postAnswer(false);
   }
 
 }

@@ -40,11 +40,11 @@ export class DataService {
             .pipe(map(res => res.text()));
     }
 
-    postSubmit(name: string, phone: string, confirm: boolean) {
+    postAnswer(isConfirmed: boolean, name?: string, phone?: string) {
         let body: any = {};
-        body.name = name;
-        body.phone = phone;
-        body.confirm = confirm;
+        body.name = name || "";
+        body.phone = phone || "";
+        body.confirm = isConfirmed;
         return this.http.post("/api/Booking", body)
             .pipe(map(res => res.json())); 
     }

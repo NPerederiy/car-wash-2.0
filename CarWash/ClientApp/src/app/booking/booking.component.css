@@ -8,3 +8,26 @@
 .flex-element{
     margin: 0.3em 0;
 }
+
+.button.decline:hover{
+    background-color: #f18181;
+}
+
+@media (max-width: 432px){
+    .button{
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (min-width: 432px){
+    .button.confirm{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;   
+    }
+    
+    .button.decline{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
