@@ -27,19 +27,22 @@ namespace CarWash.Models
             return await repositoryContext.Set<T>().Where(expression).ToListAsync();
         }
 
-        public void Create(T entity)
+        public async Task CreateAsync(T entity)
         {
-            repositoryContext.Set<T>().Add(entity);
+            await repositoryContext.Set<T>().AddAsync(entity);
+            await repositoryContext.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             repositoryContext.Set<T>().Update(entity);
+            await repositoryContext.SaveChangesAsync();
         }
 
-        public void Delete(T entity)
+        public async Task DeleteAsync(T entity)
         {
             repositoryContext.Set<T>().Remove(entity);
+            await repositoryContext.SaveChangesAsync();
         }
 
         public async Task SaveAsync()

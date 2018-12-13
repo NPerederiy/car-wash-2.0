@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using CarWash.Services.Interfaces;
+using CarWash.Models.Interfaces;
 //using System.Web.Http.Cors;
 
 namespace CarWash.Controllers
@@ -16,11 +18,11 @@ namespace CarWash.Controllers
     [ApiController]
     public class TimeController : ControllerBase
     {
-        private readonly CarWashDBContext context;
+        private ITimeManagementService tms;
 
-        public TimeController(CarWashDBContext context)
+        public TimeController(ITimeManagementService tms)
         {
-            this.context = context;
+            this.tms = tms;
         }
 
         [HttpPost]
@@ -30,7 +32,6 @@ namespace CarWash.Controllers
             {
                 try
                 {
-                    var tms = new TimeManagementService(context);
                     var response = await tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
                     return Ok(response);
                 }

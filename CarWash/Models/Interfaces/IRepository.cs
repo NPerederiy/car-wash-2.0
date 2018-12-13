@@ -9,9 +9,9 @@ namespace CarWash.Models.Interfaces
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task CreateAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
         Task SaveAsync();
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarWash.Models;
 using CarWash.Models.Interfaces;
+using CarWash.Services.Interfaces;
 
 namespace CarWash.Controllers
 {
@@ -14,39 +15,39 @@ namespace CarWash.Controllers
     [ApiController]
     public class ServiceListController : ControllerBase
     {
-        private readonly IRepository<WashService> washServices;
+        private IWashOptionService wos;
 
-        public ServiceListController(CarWashDBContext context)
+        public ServiceListController(IWashOptionService wos)
         {
-            washServices = new Repository<WashService>(context);
+            this.wos = wos;
         }
 
         // GET: api/ServiceList
         [HttpGet]
         public async Task<IActionResult> GetWashServicesAsync()
         {
-            var washService = await washServices.GetAllAsync();
+            var washOptions = await wos.GetWashServicesAsync();
 
-            if (washService == null)
+            if (washOptions == null)
             {
                 return NotFound();
             }
 
-            return Ok(washService);
+            return Ok(washOptions);
         }
 
         // GET: api/ServiceList/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWashServiceByIdAsync([FromRoute] int id)
         {
-            var washService = await washServices.GetByConditionAsync(x => x.ServiceId.Equals(id));
+            var washOptions = await wos.GetWashServiceByIdAsync(id);
 
-            if (washService == null)
+            if (washOptions == null)
             {
                 return NotFound();
             }
 
-            return Ok(washService);
+            return Ok(washOptions);
         }
     }
 }

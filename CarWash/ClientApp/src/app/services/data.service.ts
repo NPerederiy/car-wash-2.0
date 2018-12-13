@@ -11,6 +11,8 @@ export class DataService {
     private time = new BehaviorSubject(0);
     private propTime = new BehaviorSubject('');
 
+    private serverURI = "http://localhost:59511";
+
     selectedOptions = this.options.asObservable();
     totalPrice = this.price.asObservable();
     totalTime = this.time.asObservable();
@@ -19,7 +21,7 @@ export class DataService {
     constructor(private http: Http) {}
 
     getWashOptions() {
-        return this.http.get("/api/ServiceList")
+        return this.http.get(`${this.serverURI}/api/ServiceList`)
             .pipe(map(res => res.json()));
     }
 
@@ -36,7 +38,7 @@ export class DataService {
         let headers = new Headers({"Accept": "text/plain"});
         let requestOptions = new RequestOptions({ headers : headers });
 
-        return this.http.post("/api/Time", body, requestOptions)
+        return this.http.post(`${this.serverURI}/api/Time`, body, requestOptions)
             .pipe(map(res => res.text()));
     }
 
@@ -45,7 +47,7 @@ export class DataService {
         body.name = name || "";
         body.phone = phone || "";
         body.confirm = isConfirmed;
-        return this.http.post("/api/Booking", body)
+        return this.http.post(`${this.serverURI}/api/Booking`, body)
             .pipe(map(res => res.json())); 
     }
 
