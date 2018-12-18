@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CarWash.Filters;
 using CarWash.Models;
 using CarWash.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -25,29 +26,26 @@ namespace CarWash.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidatePostOrderConfirmationAttribute))]
         public async Task<IActionResult> Post([FromBody]PostOrderConfirmation body)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                if (body.Confirm)
                 {
-                    if (body.Confirm)
-                    {
-                        await bs.MakeOrder(body.Name, body.Phone, body.TimeslotId);
-                    }
-                    else
-                    {
-                        await tms.RollbackPreOrder(body.TimeslotId, body.ChangedSlotIds);
-                    }
-                    return Ok();
+                    await bs.MakeOrder(body.Name, body.Phone, body.TimeslotId);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Debug.WriteLine(ex.Message);
-                    return BadRequest(ex);
+                    await tms.RollbackPreOrder(body.TimeslotId, body.ChangedSlotIds);
                 }
+                return Ok();
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return BadRequest(ex);
+            }
         }
     }
 }

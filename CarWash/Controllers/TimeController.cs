@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using CarWash.Services.Interfaces;
 using CarWash.Models.Interfaces;
 using Newtonsoft.Json;
+using CarWash.Filters;
 
 namespace CarWash.Controllers
 {
@@ -26,22 +27,20 @@ namespace CarWash.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidatePostSelectedOptionsAndTimeAttribute))]
+
         public async Task<IActionResult> Post([FromBody]PostSelectedOptionsAndTime body)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var(time, id, changedSlots)  = await tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
-                    return Ok(new { time, id, changedSlots });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                    return BadRequest(ex);
-                }
+                var(time, id, changedSlots)  = await tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
+                return Ok(new { time, id, changedSlots });
             }
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return BadRequest(ex);
+            }
         }
     }
 }

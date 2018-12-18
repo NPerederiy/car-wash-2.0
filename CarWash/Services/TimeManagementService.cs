@@ -25,10 +25,6 @@ namespace CarWash.Services
 
         public async Task<(string Time, int SlotId, int[] ChangedSlotIds)> GetProposedTime(int[] selectedOptions, string timeFrom, string timeTo)
         {
-            if (selectedOptions == null || selectedOptions.Length == 0) throw new Exception("Selected options were not received");
-            if (timeFrom == null || timeFrom == "") throw new Exception("'timeFrom' field was not received");
-            if (timeTo == null || timeTo == "") throw new Exception("'timeTo' field was not received");
-
             var options = await GetOptionsByIdAsync(selectedOptions);
             var cellsNeeded = ConvertTimeToCells(CalcTotalTime(options));
             var tfIndex = ConvertTimeToIndex(timeFrom);
@@ -40,6 +36,65 @@ namespace CarWash.Services
             var preOrder = MakePreOrder(tfIndex, ttIndex, cellsNeeded, timeslot).Result;
 
             return (preOrder.timeslot.ToString(startWorkTime, step), preOrder.timeslot.SlotId, preOrder.changedSlots.ToArray());
+        }
+
+
+        public async Task RollbackPreOrder(int reservedSlotId, int[] changedSlotIds)
+        {
+            var ts = (await GetTimeSlotsByIdAsync(changedSlotIds).ConfigureAwait(false)).ToList();
+
+            switch (ts.Count())
+            {
+                case 0:
+                    throw new Exception("No slots with such identifiers found");
+                case 1:
+                    ts[0].IsFree = true;
+                    uow.TimeSlotRepository.Update(ts.First());
+                    break;
+                case 2:
+                    if (ts[0].SlotId == reservedSlotId)
+                    {
+                        ts[0].IsFree = true;
+                        if (ts[1].IsFree == true)
+                        {
+                            Union(ts[0], ts[1]);
+                        }
+                    }
+                    else
+                    {
+                        ts[1].IsFree = true;
+                        if (ts[0].IsFree == true)
+                        {
+                            Union(ts[0], ts[1]);
+                        }
+                    }
+                    break;
+                case 3:
+                    if (ts[1].SlotId == reservedSlotId)
+                    {
+                        ts[1].IsFree = true;
+                        if (ts[0].IsFree == true && ts[0].IsFree == false)
+                        {
+                            Union(ts[0], ts[1]);
+                        }
+                        if (ts[0].IsFree == false && ts[0].IsFree == true)
+                        {
+                            Union(ts[1], ts[2]);
+                        }
+                        if (ts[0].IsFree == true && ts[0].IsFree == true)
+                        {
+                            var t = Union(ts[0], ts[1]);
+                            Union(t, ts[2]);
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        throw new Exception("Incorrect slot ids order. The reserved slot id must be in the middle of ids array");
+                    }
+                default:
+                    throw new Exception("Too many slots. Slot count must be less than 4");
+            }
         }
 
         private async Task<List<WashService>> GetOptionsByIdAsync(int[] selectedOptions)
@@ -176,71 +231,6 @@ namespace CarWash.Services
             foreach (var s in slots)
             {
                 await uow.TimeSlotRepository.CreateAsync(s);
-            }
-        }
-
-        public async Task RollbackPreOrder(int reservedSlotId, int[] changedSlotIds)
-        {
-            if (reservedSlotId < 0) throw new Exception("Index out of range exception");
-            if (changedSlotIds.Length == 0) throw new Exception("No slot identifiers provided");
-
-            var ts = (await GetTimeSlotsByIdAsync(changedSlotIds).ConfigureAwait(false)).ToList() /*new List<TimeSlot>()*/;
-            //foreach (var i in changedSlotIds)
-            //{
-            //    ts.Add(GetTimeSlotByIdAsync(i).Result);
-            //}
-
-            switch (ts.Count())
-            {
-                case 0:
-                    throw new Exception("No slots with such identifiers found");
-                case 1:
-                    ts[0].IsFree = true;
-                    uow.TimeSlotRepository.Update(ts.First());
-                    break;
-                case 2:
-                    if (ts[0].SlotId == reservedSlotId)
-                    {
-                        ts[0].IsFree = true;
-                        if (ts[1].IsFree == true)
-                        {
-                            Union(ts[0], ts[1]);
-                        }
-                    }
-                    else
-                    {
-                        ts[1].IsFree = true;
-                        if (ts[0].IsFree == true)
-                        {
-                            Union(ts[0], ts[1]);
-                        }
-                    }
-                    break;
-                case 3:
-                    if (ts[1].SlotId == reservedSlotId)
-                    {
-                        ts[1].IsFree = true;
-                        if (ts[0].IsFree == true && ts[0].IsFree == false)
-                        {
-                            Union(ts[0], ts[1]);
-                        }
-                        if (ts[0].IsFree == false && ts[0].IsFree == true)
-                        {
-                            Union(ts[1], ts[2]);
-                        }
-                        if (ts[0].IsFree == true && ts[0].IsFree == true)
-                        {
-                            var t = Union(ts[0], ts[1]);
-                            Union(t, ts[2]);
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        throw new Exception("Incorrect slot ids order. The reserved slot id must be in the middle of ids array");
-                    }
-                default:
-                    throw new Exception("Too many slots. Slot count must be less than 4");
             }
         }
 
