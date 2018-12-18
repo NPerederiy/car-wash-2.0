@@ -69,14 +69,9 @@ export class TimePickerComponent implements OnInit {
   }
 
   pickTime(){
-    this.dataService.postSelectedTime(this.timeFrom.toString(), this.timeTo.toString())
-    .subscribe((data: any) => {
-      console.log(data);
-      
-      this.dataService.updateProposedTime(data);
-      },
-      error => console.error(error)
-    );
-    this.router.navigateByUrl('/book-time');
+    var isSucceeded = this.dataService.postSelectedTime(this.timeFrom.toString(), this.timeTo.toString());
+    if (isSucceeded) {
+      this.router.navigateByUrl('/book-time');
+    }
   }
 }

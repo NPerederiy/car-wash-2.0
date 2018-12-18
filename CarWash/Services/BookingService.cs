@@ -1,8 +1,6 @@
 ﻿using CarWash.Models.Interfaces;
 using CarWash.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarWash.Services
@@ -16,7 +14,7 @@ namespace CarWash.Services
             this.uow = uow;
         }
 
-        public Task MakeOrder()
+        public Task MakeOrder(string name, string phone, int reservedSlotId)
         {
             throw new NotImplementedException();
         }

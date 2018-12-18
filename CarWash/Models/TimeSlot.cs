@@ -18,5 +18,21 @@ namespace CarWash.Models
 
         public ICollection<BoxDetails> BoxDetails { get; set; }
         public ICollection<Order> Orders { get; set; }
+
+        public string ToString(int startWorkTime, int step)
+        {
+            var minutesInHour = 60;
+
+            if (CellId < 0) return "";
+
+            var h = CellId * step / minutesInHour;
+            var m = CellId * step - h * minutesInHour;
+            return $"{AddZeros(h + startWorkTime)}:{AddZeros(m)}";
+
+            string AddZeros(int a)
+            {
+                return a < 10 ? $"0{a}" : $"{a}";
+            }
+        }
     }
 }

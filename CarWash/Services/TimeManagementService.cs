@@ -3,6 +3,7 @@ using CarWash.Models.Interfaces;
 using CarWash.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,25 +23,26 @@ namespace CarWash.Services
             step = 5;
         }
 
-        public async Task<string> GetProposedTime(int[] selectedOptions, string timeFrom, string timeTo)
+        public async Task<(string Time, int SlotId, int[] ChangedSlotIds)> GetProposedTime(int[] selectedOptions, string timeFrom, string timeTo)
         {
             if (selectedOptions == null || selectedOptions.Length == 0) throw new Exception("Selected options were not received");
             if (timeFrom == null || timeFrom == "") throw new Exception("'timeFrom' field was not received");
             if (timeTo == null || timeTo == "") throw new Exception("'timeTo' field was not received");
 
-            var options = await GetOptionsById(selectedOptions);
+            var options = await GetOptionsByIdAsync(selectedOptions);
             var cellsNeeded = ConvertTimeToCells(CalcTotalTime(options));
             var tfIndex = ConvertTimeToIndex(timeFrom);
             var ttIndex = ConvertTimeToIndex(timeTo);
 
-            if (tfIndex + cellsNeeded > ttIndex) return "";
+            if (tfIndex + cellsNeeded > ttIndex) throw new Exception("The amount of time required is greater than the suggested time interval");
 
-            var timeslot = await GetTimeSlot(cellsNeeded, tfIndex, ttIndex);
+            var timeslot = await GetAvaliableTimeSlotAsync(cellsNeeded, tfIndex, ttIndex);
+            var preOrder = MakePreOrder(tfIndex, ttIndex, cellsNeeded, timeslot).Result;
 
-            return ConvertTimeSlotToString(PreOrder(tfIndex, ttIndex, cellsNeeded, timeslot).Result);
+            return (preOrder.timeslot.ToString(startWorkTime, step), preOrder.timeslot.SlotId, preOrder.changedSlots.ToArray());
         }
 
-        private async Task<List<WashService>> GetOptionsById(int[] selectedOptions)
+        private async Task<List<WashService>> GetOptionsByIdAsync(int[] selectedOptions)
         {
             var options = new List<WashService>();
             foreach (var id in selectedOptions)
@@ -76,7 +78,7 @@ namespace CarWash.Services
             return Convert.ToInt32(t[1]) + Convert.ToInt32(t[0]) * minutesInHour;
         } 
 
-        private async Task<TimeSlot> GetTimeSlot(int cellsNeeded, int tfIndex, int ttIndex)
+        private async Task<TimeSlot> GetAvaliableTimeSlotAsync(int cellsNeeded, int tfIndex, int ttIndex)
         {
             var avaliableTimeSlots = await uow.TimeSlotRepository.GetByConditionAsync(x =>
                 x.IsFree == true &&
@@ -84,18 +86,31 @@ namespace CarWash.Services
                 tfIndex <= x.CellId + x.CellCount &&
                 ttIndex >= x.CellId + cellsNeeded - 1
             );
-
             return avaliableTimeSlots.OrderBy(x => x.CellId).FirstOrDefault();
         }
 
-        private async Task<TimeSlot> PreOrder(int tfi, int tti, int cn, TimeSlot ts)
+        private async Task<TimeSlot> GetTimeSlotByIdAsync(int id)
         {
+            var query = await uow.TimeSlotRepository.GetByConditionAsync(x => x.SlotId == id);
+            return query.FirstOrDefault();
+        }
+
+        private async Task<IEnumerable<TimeSlot>> GetTimeSlotsByIdAsync(params int[] ids)
+        {
+            var query = await uow.TimeSlotRepository.GetByConditionAsync(x => ids.Contains(x.SlotId));
+            return query;
+        }
+
+        private async Task<(TimeSlot timeslot, List<int> changedSlots)> MakePreOrder(int tfi, int tti, int cn, TimeSlot ts)
+        {
+            var changedSlotIds = new List<int>();
             // TODO: Add new time slots to appropriate box details
             if ((tfi == ts.CellId && ts.CellCount == cn) || (tti == ts.CellId + cn - 1))
             {
                 ts.IsFree = false;
-                await uow.TimeSlotRepository.UpdateAsync(ts);
-                return ts;
+                uow.TimeSlotRepository.Update(ts);
+                changedSlotIds.Add(ts.SlotId);
+                return (ts, changedSlotIds);
             }
             else if (tfi < ts.CellId)
             {
@@ -114,9 +129,13 @@ namespace CarWash.Services
                         IsFree = true
                     }
                 };
+                foreach (var s in slots)
+                {
+                    changedSlotIds.Add(s.SlotId);
+                }
                 await CreateTimeSlotsAsync(slots);
-                await uow.TimeSlotRepository.DeleteAsync(ts);
-                return slots.First();
+                uow.TimeSlotRepository.Delete(ts);
+                return (slots.First(), changedSlotIds);
             }
             else if (tfi > ts.CellId)
             {
@@ -124,15 +143,15 @@ namespace CarWash.Services
                 {
                     new TimeSlot()
                     {
-                        CellId = tfi,
-                        CellCount = cn,
-                        IsFree = false
-                    },
-                    new TimeSlot()
-                    {
                         CellId = ts.CellId,
                         CellCount = tfi - ts.CellId,
                         IsFree = true
+                    },
+                    new TimeSlot()
+                    {
+                        CellId = tfi,
+                        CellCount = cn,
+                        IsFree = false
                     },
                     new TimeSlot()
                     {
@@ -142,10 +161,14 @@ namespace CarWash.Services
                     }
                 };
                 await CreateTimeSlotsAsync(slots);
-                await uow.TimeSlotRepository.DeleteAsync(ts);
-                return slots.First();
+                foreach(var s in slots)
+                {
+                    changedSlotIds.Add(s.SlotId);
+                }
+                uow.TimeSlotRepository.Delete(ts);
+                return (slots[1] , changedSlotIds);
             }
-            return null;
+            return (null, null);
         }
 
         private async Task CreateTimeSlotsAsync(List<TimeSlot> slots)
@@ -156,24 +179,77 @@ namespace CarWash.Services
             }
         }
 
-        private string RollbackPreOrder()
+        public async Task RollbackPreOrder(int reservedSlotId, int[] changedSlotIds)
         {
+            if (reservedSlotId < 0) throw new Exception("Index out of range exception");
+            if (changedSlotIds.Length == 0) throw new Exception("No slot identifiers provided");
 
-            return "";
+            var ts = (await GetTimeSlotsByIdAsync(changedSlotIds).ConfigureAwait(false)).ToList() /*new List<TimeSlot>()*/;
+            //foreach (var i in changedSlotIds)
+            //{
+            //    ts.Add(GetTimeSlotByIdAsync(i).Result);
+            //}
+
+            switch (ts.Count())
+            {
+                case 0:
+                    throw new Exception("No slots with such identifiers found");
+                case 1:
+                    ts[0].IsFree = true;
+                    uow.TimeSlotRepository.Update(ts.First());
+                    break;
+                case 2:
+                    if (ts[0].SlotId == reservedSlotId)
+                    {
+                        ts[0].IsFree = true;
+                        if (ts[1].IsFree == true)
+                        {
+                            Union(ts[0], ts[1]);
+                        }
+                    }
+                    else
+                    {
+                        ts[1].IsFree = true;
+                        if (ts[0].IsFree == true)
+                        {
+                            Union(ts[0], ts[1]);
+                        }
+                    }
+                    break;
+                case 3:
+                    if (ts[1].SlotId == reservedSlotId)
+                    {
+                        ts[1].IsFree = true;
+                        if (ts[0].IsFree == true && ts[0].IsFree == false)
+                        {
+                            Union(ts[0], ts[1]);
+                        }
+                        if (ts[0].IsFree == false && ts[0].IsFree == true)
+                        {
+                            Union(ts[1], ts[2]);
+                        }
+                        if (ts[0].IsFree == true && ts[0].IsFree == true)
+                        {
+                            var t = Union(ts[0], ts[1]);
+                            Union(t, ts[2]);
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        throw new Exception("Incorrect slot ids order. The reserved slot id must be in the middle of ids array");
+                    }
+                default:
+                    throw new Exception("Too many slots. Slot count must be less than 4");
+            }
         }
 
-        private string ConvertTimeSlotToString(TimeSlot ts)
+        private TimeSlot Union(TimeSlot ts1, TimeSlot ts2)
         {
-            if (ts == null) return "";
-
-            var h = ts.CellId * step / minutesInHour;
-            var m = ts.CellId * step - h * minutesInHour;
-            return $"{AddZeros(h + startWorkTime)}:{AddZeros(m)}";
-
-            string AddZeros(int a)
-            {
-                return a < 10 ? $"0{a}" : $"{a}";
-            }
+            ts1.CellCount += ts2.CellCount;
+            uow.TimeSlotRepository.Update(ts1);
+            uow.TimeSlotRepository.Delete(ts2);
+            return ts1;
         }
     }
 }

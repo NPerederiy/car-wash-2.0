@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -22,8 +22,7 @@ import { TimePickerTimelineComponent } from './time-picker-timeline/time-picker-
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { DataService } from '@app/services/data.service';
 import { BookingComponent } from './booking/booking.component';
-// import { MouseWheelDirective } from './mousewheel.directive';
-import { HttpModule } from '@angular/http';
+// import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -42,13 +41,12 @@ import { HttpModule } from '@angular/http';
     ErrorProviderComponent,
     TimePickerTimelineComponent,
     TimeFormatPipe,
-    BookingComponent, 
-    // MouseWheelDirective
+    BookingComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    // HttpClientModule,
-    HttpModule,
+    HttpClientModule,
+    // HttpModule,
     FormsModule,
     // NgbModule,
     RouterModule.forRoot([

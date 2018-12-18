@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { BehaviorSubject} from 'rxjs';
-import { map } from 'rxjs/operators';
 import { IService } from '@shared/models/interfaces/car-wash-service.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class DataService {
@@ -10,7 +9,8 @@ export class DataService {
     private price = new BehaviorSubject(0);
     private time = new BehaviorSubject(0);
     private propTime = new BehaviorSubject('');
-
+    private proposedTimeSlotId: number;
+    private changedTimeSlots: number[];
     private serverURI = "http://localhost:59511";
 
     selectedOptions = this.options.asObservable();
@@ -18,37 +18,55 @@ export class DataService {
     totalTime = this.time.asObservable();
     proposedTime = this.propTime.asObservable();
 
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
-    getWashOptions() {
-        return this.http.get(`${this.serverURI}/api/ServiceList`)
-            .pipe(map(res => res.json()));
+    getWashOptions() {        
+        return this.http.get(`${this.serverURI}/api/ServiceList`);
     }
 
-    postSelectedTime(timeFrom: string, timeTo: string) {
+    async postSelectedTime(timeFrom: string, timeTo: string): Promise<boolean> {       
         let body: any = {};   
-        let ids: number[] = [];     
-        this.options.value.forEach(el => {
-            ids.push(el.getId);       
+        let identifiers: number[] = [];     
+        this.options.value.forEach(o => {
+            identifiers.push(o.getId);       
         });
-        body.selectedOptionId = ids;
+        body.selectedOptionId = identifiers;
         body.timeFrom = timeFrom;
         body.timeTo = timeTo;
-        
-        let headers = new Headers({"Accept": "text/plain"});
-        let requestOptions = new RequestOptions({ headers : headers });
-
-        return this.http.post(`${this.serverURI}/api/Time`, body, requestOptions)
-            .pipe(map(res => res.text()));
+        return await this.http.post(`${this.serverURI}/api/Time`, body).toPromise()
+            .then(
+                (data: any) => {      
+                    this.updateProposedTime(data.time);
+                    this.proposedTimeSlotId = data.id;
+                    this.changedTimeSlots = data.changedSlots;                    
+                    return true;
+                }
+            )
+            .catch( error => {
+                console.error(error);
+                return false;
+            });
     }
-
-    postAnswer(isConfirmed: boolean, name?: string, phone?: string) {
+        
+    async postAnswer(isConfirmed: boolean, name?: string, phone?: string): Promise<boolean> {
         let body: any = {};
         body.name = name || "";
         body.phone = phone || "";
         body.confirm = isConfirmed;
-        return this.http.post(`${this.serverURI}/api/Booking`, body)
-            .pipe(map(res => res.json())); 
+        body.timeslotId = this.proposedTimeSlotId;
+        body.changedSlots = this.changedTimeSlots;
+        console.log("changedSlots: ", this.changedTimeSlots);
+        return await this.http.post(`${this.serverURI}/api/Booking`, body).toPromise()
+            .then(
+                data => {      
+                    console.log(data);
+                    return true;
+                }
+            )
+            .catch( error => {
+                console.error(error);
+                return false;
+            });;
     }
 
     updateProposedTime(time: string) {

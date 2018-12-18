@@ -10,7 +10,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using CarWash.Services.Interfaces;
 using CarWash.Models.Interfaces;
-//using System.Web.Http.Cors;
+using Newtonsoft.Json;
 
 namespace CarWash.Controllers
 {
@@ -32,8 +32,8 @@ namespace CarWash.Controllers
             {
                 try
                 {
-                    var response = await tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
-                    return Ok(response);
+                    var(time, id, changedSlots)  = await tms.GetProposedTime(body.SelectedWashServices, body.TimeFrom, body.TimeTo);
+                    return Ok(new { time, id, changedSlots });
                 }
                 catch (Exception ex)
                 {
