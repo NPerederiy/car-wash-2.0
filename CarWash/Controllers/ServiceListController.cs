@@ -40,14 +40,14 @@ namespace CarWash.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWashServiceByIdAsync([FromRoute] int id)
         {
-            var washOptions = await wos.GetWashServiceByIdAsync(id);
+            var washOption = await wos.GetWashServiceByIdAsync(id);
 
-            if (washOptions == null)
+            if (washOption == null)
             {
                 return NotFound();
             }
 
-            return Ok(washOptions);
+            return Ok(washOption);
         }
     }
 }

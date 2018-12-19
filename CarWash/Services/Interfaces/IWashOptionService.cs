@@ -7,6 +7,6 @@ namespace CarWash.Services.Interfaces
     public interface IWashOptionService
     {
         Task<IEnumerable<WashService>> GetWashServicesAsync();
-        Task<IEnumerable<WashService>> GetWashServiceByIdAsync(int id);
+        Task<WashService> GetWashServiceByIdAsync(int id);
     }
 }
